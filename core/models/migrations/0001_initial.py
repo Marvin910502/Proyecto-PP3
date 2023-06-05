@@ -201,6 +201,19 @@ class Migration(migrations.Migration):
                 'db_table': 'Parte de Hora',
             },
         ),
+        migrations.CreateModel(
+            name='Permiso',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('nombre', models.TextField(max_length=50, verbose_name='Nombre')),
+                ('usuario', models.ManyToManyField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Usuario', related_name='user')),
+            ],
+            options={
+                'verbose_name': 'Permiso',
+                'verbose_name_plural': 'Permisos',
+                'db_table': 'Permiso',
+            },
+        ),
         migrations.AddField(
             model_name='investigacion',
             name='trabajador',

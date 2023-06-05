@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from core.models.models import *
-from core.gestion.forms import *
 from django.contrib.auth.decorators import *
 
 
@@ -11,8 +10,16 @@ from django.contrib.auth.decorators import *
 def Menu_Investigaciones(request):
     Proyectos = Investigacion.objects.order_by('nombre')
     trabajador = Trabajador.objects.all() 
-    title = 'Investigaciones'
-    return render(request, 'website/home.html', {'Proyectos':Proyectos, 'title':title, 'trabajador':trabajador})
+    title = 'Gestor CFA'
+    section = 'Investigaciones'
+
+    context = {
+        'Proyectos': Proyectos,
+        'title': title,
+        'section': section,
+        'trabajador': trabajador,
+    }
+    return render(request, 'website/menu_investigaciones.html', context)
 
 
 @login_required()

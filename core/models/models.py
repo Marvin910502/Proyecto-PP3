@@ -4,10 +4,6 @@ from django.contrib.auth.models import *
 # Create your models here.
 
 
-
-
-
-
 class Institucion(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre de Institución', max_length=50)
@@ -24,18 +20,6 @@ class Institucion(models.Model):
         return self.nombre
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 class Departamento(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre Departamento', max_length=50) 
@@ -48,12 +32,6 @@ class Departamento(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
-
-
-
-
 
 
 class Nivel_Academico(models.Model):
@@ -70,12 +48,6 @@ class Nivel_Academico(models.Model):
         return self.nivel_academico
 
 
-
-
-
-
-
-
 class Especializacion(models.Model):
 
     especializacion = models.CharField(verbose_name='Especialización', max_length=50, null=True, blank=True) 
@@ -88,16 +60,6 @@ class Especializacion(models.Model):
 
     def __str__(self):
         return self.especializacion
-
-
-
-
-
-
-
-
-
-
 
 
 class Investigacion(models.Model):
@@ -119,18 +81,6 @@ class Investigacion(models.Model):
         return self.nombre
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 class Evento(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre Evento', max_length=50) 
@@ -146,15 +96,6 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
-
-
-
-
-
-
-
 
 
 class Publicacion(models.Model):
@@ -173,17 +114,6 @@ class Publicacion(models.Model):
         return self.nombre
 
 
-
-
-
-
-
-
-
-
-
-
-
 class Informe_Semestral_Resultados(models.Model):
 
     nombre_proyecto = models.CharField(verbose_name='Nombre del Proyecto', max_length=50, null=True)
@@ -200,17 +130,6 @@ class Informe_Semestral_Resultados(models.Model):
         return self.id
 
 
-
-
-
-
-
-
-
-
-
-
-
 class Informe_Final_Resultados(models.Model):
 
     nombre_proyecto = models.CharField(verbose_name='Nombre del Proyecto', max_length=50, null=True)
@@ -225,20 +144,6 @@ class Informe_Final_Resultados(models.Model):
 
     def __int__(self):
         return self.id
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Trabajador(models.Model):
@@ -261,9 +166,6 @@ class Trabajador(models.Model):
     especializacion = models.ForeignKey("Especializacion", verbose_name='Especialización', on_delete=models.DO_NOTHING, null=True, blank=True)
     usuario = models.OneToOneField(User, verbose_name='Usuario', on_delete=models.CASCADE, null=True, blank=True)
 
-
-
-
     class Meta:
         verbose_name = "Trabajador"
         verbose_name_plural = "Trabajadores"
@@ -271,20 +173,6 @@ class Trabajador(models.Model):
 
     def __str__(self):
         return f'{self.nombre} {self.apellidos}'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Parte_Hora(models.Model):
@@ -302,17 +190,6 @@ class Parte_Hora(models.Model):
 
     def __int__(self):
         return self.id
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Tarea(models.Model):
@@ -338,7 +215,18 @@ class Tarea(models.Model):
         return self.nombre
 
 
+class Permiso(models.Model):
 
+    nombre = models.CharField(verbose_name='Nombre Tarea', max_length=50)
+    usuario = models.ManyToManyField(User, verbose_name='Usuario', blank=True, null=True, related_name='user')
+
+    class Meta:
+        verbose_name = "Permiso"
+        verbose_name_plural = "Permisos"
+        db_table = "Permiso"
+
+    def __str__(self):
+        return self.nombre
 
 
 
