@@ -1,57 +1,126 @@
-<style>
-    .line-clamp {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-    }
+{% extends 'admin/theme/base_admin.html' %}
+{% load static %}
 
-    .line-clamp2 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
+{% block content %}
+    <form method="POST" class="row" name="crear_usuario">
 
+        {% csrf_token %}
+        <div class="col-1 pt-2 mt-5 ps-2 pe-5">
+            <a href="/menu_usuarios/" class="btn btn-primary">Volver</a>
+        </div>
+        <div class="col-5 pt-2 ps-5 pe-5">
+            <label for="username" class="form-label mt-3">Nombre de Usuario</label><br>
+            <input class="form-control" type="text" id="formFile" name="username" value="{{ username }}">
+            <button class="btn btn-primary mt-3 form-control" type="button" data-bs-toggle="modal" data-bs-target="#cambiar_contraseña">Cambiar Contraseña</button>
+            <label for="nombre" class="form-label mt-3">Nombre</label><br>
+            <input class="form-control" type="text" id="formFile" name="nombre" value="{{ nombre }}">
+            <label for="apellidos" class="form-label mt-3">Apellidos</label><br>
+            <input class="form-control" type="text" id="formFile" name="apellidos" value="{{ apellidos }}">
+            <label for="ci" class="form-label mt-3">Carnet de Identidad</label><br>
+            <input class="form-control" type="text" id="formFile" name="ci" value="{{ ci }}" maxlength="11">
+        </div>
+        <div class="col-5 pt-2 ps-5 pe-5">
+            <label for="input_client_image" class="form-label mt-3">Sexo</label><br>
+            <select class="form-select" name="sexo" required>
+              <option selected value="">-----</option>
+              <option {% if sexo == 'masculino' %} selected {% endif %} value="masculino">Masculino</option>
+              <option {% if sexo == 'femenino' %} selected {% endif %} value="femenino">Femenino</option>
+              <option {% if sexo == 'otro' %} selected {% endif %} value="otro">Otro</option>
+            </select>
+            <label for="input_client_image" class="form-label mt-3">Institución</label><br>
+            <select class="form-select" name="institucion" required>
+              <option selected value="">-----</option>
+              {% for institucion in institucion_list %}
+                <option {% if institucion.id == institucion_id.id %} selected {% endif %} value="{{ institucion.id }}">{{ institucion.nombre }}</option>
+              {% endfor %}
+            </select>
+            <label for="input_client_image" class="form-label mt-3">Departamento</label><br>
+            <select class="form-select" name="departamento" required>
+              <option selected value="">-----</option>
+              {% for departamento in departamento_list %}
+                <option {% if departamento.id == departamento_id.id %} selected {% endif %} value="{{ departamento.id }}">{{ departamento.nombre }}</option>
+              {% endfor %}
+            </select>
+            <label for="input_client_image" class="form-label mt-3">Nivel Académico</label><br>
+            <select class="form-select" name="nivel_academico" required>
+              <option selected value="">-----</option>
+              {% for nivel in nivel_list %}
+                <option {% if nivel.id == nivel_id.id %} selected {% endif %} value="{{ nivel.id }}">{{ nivel.nivel_academico }}</option>
+              {% endfor %}
+            </select>
+            <label for="input_client_image" class="form-label mt-3">Especialización</label><br>
+            <select class="form-select" name="especializacion" required>
+              <option selected value="">-----</option>
+              {% for especializacion in especializacion_list %}
+                <option {% if especializacion.id == especializacion_id.id %} selected {% endif %} value="{{ especializacion.id }}">{{ especializacion.especializacion }}</option>
+              {% endfor %}
+            </select>
+            <input type="hidden" name="editar_usuario">
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary form-control-sm">Guardar</button>
+                <a class="btn btn-danger form-control-sm" data-bs-toggle="modal" data-bs-target="#eliminar_usuario_{{ usuario.id }}_modal">Eliminar</a>
+            </div>
 
-    .formularios-invisibles{
-        height: 1px;
-        overflow: hidden;
-        text-size-adjust: 1px;
-    }
-</style>
+        </div>
+    </form>
 
-
-<div class="row">
-    {% include 'header.html' %}
-</div>
-<div class="row">
-    <div class="col-2">
-        {% include 'sidebar.html' %}
+    <div class="modal fade" id="eliminar_usuario_{{ usuario.id }}_modal" tabindex="-1" aria-labelledby="eliminar_usuario_{{ usuario.id }}_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminar_usuario_{{ trabajador.usuario.id }}_modal_label">Eliminar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-text">
+                        ¿Está seguro que desea eliminar este usuario?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-outline-danger">Sí, eliminar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    {% if user.id == id_user %}
+<!-- Modal -->
+<div class="modal fade" id="cambiar_contraseña" tabindex="-1" aria-labelledby="cambiar_contraseña_modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-    <div class="col-10">
-        <!-- Contenido dinámico inicio -->            
-                <form method="POST" class="row">
-                    {% csrf_token %}
-                    <div class="col-5 pt-5 ps-5 pe-5">
-                    {{ Usuario_Form.as_p }} 
-                    </div>
-                    <div class="col-5 pt-5 ps-5 pe-5">
-                    {{ Trabajador_Form.as_p }}
-                    </div>
+            <div class="modal-header">
+                <h5>Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="container ps-5 pe-5">
+                <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                     <div class="row">
-                        <div class="col-9"></div>
-                        <div class="col-1 ps-5 pe-2"><button type="submit" class="btn btn-success">Guardar</button></div>
-                        <div class="col-2"></div>
+                        <div class="mb-3 col-12">
+                          <label for="input_client_image" class="form-label mt-3">Contraseña Actual</label><br>
+                          <input class="form-control" type="password" name="contraseña_vieja" value="{{ old_password }}" required>
+                        </div>
+                        <div class="mb-3 col-12">
+                          <label for="input_client_image" class="form-label">Nueva Contraseña</label><br>
+                          <input class="form-control" type="password" name="contraseña" value="{{ password }}" required>
+                        </div>
+                        <div class="mb-3 col-12">
+                          <label for="input_client_image" class="form-label">Confirmar Nueva Contraseña</label><br>
+                          <input class="form-control" type="password" name="confirmar_contraseña" value="{{ password2 }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" name="cambiar_contraseña">
+                            <button type="submit" class="btn btn-outline-primary">Guardar Contraseña Nueva</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
                     </div>
-                    
                 </form>
-        <!-- Contenido dinámico fin -->
-    </div>  
-          
-    {% endif %}  
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+{% endblock content %}
 
 

@@ -5,6 +5,9 @@
     <form method="POST" class="row" name="crear_usuario">
 
         {% csrf_token %}
+        <div class="col-1 pt-2 mt-5 ps-2 pe-5">
+            <a href="/menu_usuarios/" class="btn btn-primary">Volver</a>
+        </div>
         <div class="col-5 pt-2 ps-5 pe-5">
             <label for="username" class="form-label mt-3">Nombre de Usuario</label><br>
             <input class="form-control" type="text" id="formFile" name="username" value="{{ username }}">
@@ -19,7 +22,7 @@
             <label for="apellidos" class="form-label mt-3">Apellidos</label><br>
             <input class="form-control" type="text" id="formFile" name="apellidos" value="{{ apellidos }}">
             <label for="ci" class="form-label mt-3">Carnet de Identidad</label><br>
-            <input class="form-control" type="text" id="formFile" name="ci" value="{{ ci }}">
+            <input class="form-control" type="text" id="formFile" name="ci" value="{{ ci }}" maxlength="11">
             <label for="input_client_image" class="form-label mt-3">Sexo</label><br>
             <select class="form-select" name="sexo" required>
               <option selected value="">-----</option>

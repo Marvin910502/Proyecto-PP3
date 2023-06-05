@@ -12,8 +12,6 @@
                 <th>Departamento</th>
                 <th>Especialización</th>
                 <th></th>
-                <th></th>
-                <th></th>
             </tr>
             {% for trabajador in Trab %}
             <tr>
@@ -22,11 +20,30 @@
                 <td>{{ trabajador.ci }}</td>
                 <td>{{ trabajador.institucion.nombre }}</td>
                 <td>{{ trabajador.departamento.nombre }}</td>
-                <td>{{ trabajador.espacializacion.especializacion }}</td>
-                <td><a href="{% url 'perfil' trabajador.usuario.id %}" class="btn btn-primary">Entrar</a></td>
-                <td><a href="{% url 'editar_perfil' trabajador.usuario.id %}" class="btn btn-success">Editar</a></td>
-                <td><a href="#" class="btn btn-danger">Eliminar</a></td>
+                <td>{{ trabajador.especializacion.especializacion }}</td>
+                <td><a href="{% url 'editar_usuario' trabajador.usuario.id %}" class="btn btn-success">Editar</a></td>
             </tr>
+
+            <div class="modal fade" id="eliminar_usuario_{{ trabajador.usuario.id }}_modal" tabindex="-1" aria-labelledby="eliminar_usuario_{{ trabajador.usuario.id }}_modal_label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eliminar_usuario_{{ trabajador.usuario.id }}_modal_label">Eliminar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-text">
+                                ¿Está seguro que desea eliminar este usuario?
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'eliminar_usuario' trabajador.usuario.id %}" class="btn btn-outline-danger">Sí, eliminar</a>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% endfor %}
         </table>
     </div>

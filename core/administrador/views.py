@@ -53,23 +53,31 @@ def Crear_Usuario(request):
         especializacion = Especializacion.objects.filter(id=request_post.get('especializacion')).first()
         horas_ocupadas = 0
         if compare_digest(password, password2):
-            usuario = User.objects.create_user(
-                username=username,
-                password=password,
-            )
-            Trabajador.objects.create(
-                nombre=nombre,
-                apellidos=apellidos,
-                ci=ci,
-                sexo=sexo,
-                institucion=institucion,
-                departamento=departamento,
-                nivel=nivel,
-                especializacion=especializacion,
-                horas_ocupadas=horas_ocupadas,
-                usuario=usuario,
-            )
-            return redirect('menu_usuarios')
+            if not User.objects.filter(username=username).first() and not Trabajador.objects.filter(ci=ci).first():
+                if len(ci) == 11 and ci.isnumeric():
+                    usuario = User.objects.create_user(
+                        username=username,
+                        password=password,
+                    )
+                    Trabajador.objects.create(
+                        nombre=nombre,
+                        apellidos=apellidos,
+                        ci=ci,
+                        sexo=sexo,
+                        institucion=institucion,
+                        departamento=departamento,
+                        nivel=nivel,
+                        especializacion=especializacion,
+                        horas_ocupadas=horas_ocupadas,
+                        usuario=usuario,
+                    )
+                    return redirect('menu_usuarios')
+                else:
+                    message = ("El carnet de identidad tiene que tener 11 dígitos y solo números.")
+                    class_alert = DANGER_MESSAGE
+            else:
+                message = ("El usuario que intenta crear ya existe.")
+                class_alert = DANGER_MESSAGE
         else:
             message = ("Las contraseñas no coenciden.")
             class_alert = DANGER_MESSAGE
@@ -97,41 +105,142 @@ def Crear_Usuario(request):
         'departamento_list': departamento_list,
         'nivel_list': nivel_list,
         'especializacion_list': especializacion_list,
+        'title': 'Gestor CFA',
+        'section': 'Crear Usuario',
     }
 
     return render(request, 'admin/crear_usuario.html', context)
 
 
+def Eliminar_Usuario(request, id_user):
+    usuario = User.objects.filter(id=id_user).first()
+    trabajador = Trabajador.objects.filter(usuario_id=id_user).first()
+    usuario.delete()
+    trabajador.delete()
+    return redirect('menu_usuarios')
+
+
 @login_required()
 def Editar_Usuario(request, id_user):
-    user = User.objects.get(id = id_user)
-    trab = Trabajador.objects.filter(usuario = user).first()
+    message, class_alert = check_session_message(request)
+
+    trabajador = Trabajador.objects.filter(usuario_id=id_user).first()
+
+    usuario = User.objects.filter(id=id_user).first()
+    password = ''
+    password2 = ''
+    old_password = ''
+    username = usuario.username
+    nombre = trabajador.nombre
+    apellidos = trabajador.apellidos
+    ci = trabajador.ci
+    sexo = trabajador.sexo
+    institucion = trabajador.institucion
+    departamento = trabajador.departamento
+    nivel = trabajador.nivel
+    especializacion = trabajador.especializacion
+    horas_ocupadas = trabajador.horas_ocupadas
     if request.method == 'POST':
-        Usuario_Form = EditarUsuarioForm(request.POST, instance = user)
-        Trabajador_Form = EditarTrabajadorForm(request.POST, instance = trab)
-        if Usuario_Form.is_valid() and Trabajador_Form.is_valid():
-            usuario =  Usuario_Form.save()
-            trabajador = Trabajador_Form.save(commit=False)          
-            trabajador.usuario = usuario
-            trabajador.save()
-            return redirect('home')
-    else:
-        Usuario_Form = EditarUsuarioForm(instance = user)
-        Trabajador_Form = EditarTrabajadorForm(instance = trab)
-    return render(request, 'admin/editar_usuario.html', {'Usuario_Form': Usuario_Form, 'Trabajador_Form': Trabajador_Form, 'id_user': id_user})
+        request_post = request.POST
+        if 'editar_usuario' in request_post:
+            username = request_post.get('username')
+            nombre = request_post.get('nombre')
+            apellidos = request_post.get('apellidos')
+            ci = request_post.get('ci')
+            sexo = request_post.get('sexo')
+            institucion = Institucion.objects.filter(id=request_post.get('institucion')).first()
+            departamento = Departamento.objects.filter(id=request_post.get('departamento')).first()
+            nivel = Nivel_Academico.objects.filter(id=request_post.get('nivel_academico')).first()
+            especializacion = Especializacion.objects.filter(id=request_post.get('especializacion')).first()
+            if not User.objects.filter(username=username).exclude(id=usuario.id).first() and not Trabajador.objects.filter(ci=ci).exclude(id=trabajador.id).first():
+                if len(ci) == 11 and ci.isnumeric():
+                    usuario.username = username
+                    usuario.save()
+                    trabajador.nombre = nombre
+                    trabajador.apellidos = apellidos
+                    trabajador.ci = ci
+                    trabajador.sexo = sexo
+                    trabajador.institucion = institucion
+                    trabajador.departamento = departamento
+                    trabajador.nivel = nivel
+                    trabajador.especializacion = especializacion
+                    trabajador.save()
+                else:
+                    message = ("El carnet de identidad tiene que tener 11 dígitos y solo números.")
+                    class_alert = DANGER_MESSAGE
+            else:
+                message = ("El nombre de usuario o el carnet que editó ya existen.")
+                class_alert = DANGER_MESSAGE
+
+        elif 'cambiar_contraseña' in request_post:
+            password = request_post.get('contraseña')
+            password2 = request_post.get('confirmar_contraseña')
+            old_password = request_post.get('contraseña_vieja')
+            if authenticate(username=usuario.username, password=old_password):
+                if compare_digest(password, password2):
+                    usuario.set_password(password)
+                    usuario.save()
+                else:
+                    message = ("La contraseñas nuevas no coenciden.")
+                    class_alert = DANGER_MESSAGE
+            else:
+                message = ("La contraseña actual es incorrecta.")
+                class_alert = DANGER_MESSAGE
+
+    institucion_list = Institucion.objects.all()
+    departamento_list = Departamento.objects.all()
+    nivel_list = Nivel_Academico.objects.all()
+    especializacion_list = Especializacion.objects.all()
+    context = {
+        'usuario': usuario,
+        'nombre': nombre,
+        'apellidos': apellidos,
+        'ci': ci,
+        'sexo': sexo,
+        'institucion_id': institucion,
+        'departamento_id': departamento,
+        'nivel_id': nivel,
+        'especializacion_id': especializacion,
+        'horas_ocupadas': horas_ocupadas,
+        'username': username,
+        'password': password,
+        'password2': password2,
+        'message': message,
+        'class_alert': class_alert,
+        'institucion_list': institucion_list,
+        'departamento_list': departamento_list,
+        'nivel_list': nivel_list,
+        'especializacion_list': especializacion_list,
+        'old_password': old_password,
+        'title': 'Gestor CFA',
+        'section': 'Editar Usuario',
+    }
+
+    return render(request, 'admin/editar_usuario.html', context)
 
 
 @login_required()
-def Usaurio(request, id_user):
+def Perfil(request, id_user):
     user = User.objects.get(id=id_user)
-    trab = Trabajador.objects.filter(usuario = user).first()    
-    return render(request, 'website/../../templates/admin/perfil.html', {'trab': trab})
+    trab = Trabajador.objects.filter(usuario = user).first()
+
+    context = {
+        'trab': trab,
+        'user': user,
+    }
+    return render(request, 'admin/perfil.html', context)
 
 
 @login_required()
 def Lista_Usuarios(request):
     Trab = Trabajador.objects.order_by('nombre')
-    return render(request, 'website/../../templates/admin/menu_usuarios.html', {'Trab': Trab})
+
+    context = {
+        'Trab': Trab,
+        'title': 'Gestor CFA',
+        'section': 'Lista de Usuarios',
+    }
+    return render(request, 'admin/menu_usuarios.html', context)
 
 
 def check_session_message(request):
