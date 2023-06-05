@@ -206,7 +206,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nombre', models.TextField(max_length=50, verbose_name='Nombre')),
-                ('usuario', models.ManyToManyField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Usuario', related_name='user')),
+                ('usuario', models.ManyToManyField(blank=True, null=True, to=settings.AUTH_USER_MODEL, verbose_name='Usuario', related_name='user')),
             ],
             options={
                 'verbose_name': 'Permiso',
