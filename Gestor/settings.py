@@ -64,7 +64,7 @@ ROOT_URLCONF = 'Gestor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates','templates/theme'],
+        'DIRS': ['templates', 'templates/website/theme'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,9 +88,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'gestor',
-        'USER': 'postgres',
+        'USER': 'gestor',
         'PASSWORD': '123',
-        'HOST': 'localhost',
+        'HOST': '192.168.150.48',
         'PORT': '5432',
     }
 }

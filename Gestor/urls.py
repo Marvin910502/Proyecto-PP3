@@ -21,17 +21,15 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('home/', Home, name='home'),
+    path('investigaciones/', Menu_Investigaciones, name='menu_investigaciones'),
     path('crear_usuario/', Crear_Usuario, name='crear_usuario'),
     path('menu_usuarios/', Lista_Usuarios, name='menu_usuarios'),
     path('perfil/<int:id_user>/', Usaurio, name='perfil'),
     path('editar_perfil/<int:id_user>/', Editar_Usuario, name='editar_perfil'),
-    path('editar_perfil_con_admin/<int:id_user>/', Editar_Usuario_Admin, name='editar_perfil_con_admin'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('', Login, name='login'),
     path('menu_tareas/<str:investigacion_nombre>/', Tarea_View, name='tarea_view'),
     path('tarea/<str:tarea_nombre>/<str:nombre_usuario>', Tarea_Contenido, name='tarea_contenido'),
     path('crear_investigacion/', Crear_Investigacion, name='crear_investigacion'),

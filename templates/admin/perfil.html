@@ -1,0 +1,139 @@
+<style>
+    .line-clamp {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .line-clamp2 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+
+    .formularios-invisibles{
+        height: 1px;
+        overflow: hidden;
+        text-size-adjust: 1px;
+    }
+</style>
+
+
+<div class="row">
+    {% include 'header.html' %}
+</div>
+<div class="row">
+    <div class="col-2">
+        {% include 'sidebar.html' %}
+    </div>
+    <div class="col-10">
+        <!-- Contenido dinámico inicio -->            
+                <form method="POST" class="row">
+                    <div class="col-5 pt-5 ps-5 pe-5">
+                        <div class="row">
+                        <div class="col-3">
+                            <label>Nombre:</label>
+                        </div>
+                        <div class="col-9">
+                            <h6>{{ trab.nombre }}</h6>
+                        </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Apellidos:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.apellidos }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Usuario:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ user.username }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-5 pt-5 ps-5 pe-5">
+                        <div class="row">
+                            <div class="col-3">
+                                <label>CI:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.ci }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Sexo:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.sexo }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Horas Ocupadas:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.horas_ocupadas }} horas</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Departamento:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.departamento }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Nivel:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.nivel }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Institución:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.institucion }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Especialización:</label>
+                            </div>
+                            <div class="col-9">
+                                <h6>{{ trab.especializacion }}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-9"></div>
+                        <div class="col-1 ps-5 pe-2"><a href="{% url 'editar_perfil' user.id %}" class="btn btn-primary">Editar</a></div>
+                        <div class="col-2"></div>
+                    </div>
+                    
+                </form>
+        <!-- Contenido dinámico fin -->
+    </div>    
+
+

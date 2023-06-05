@@ -4,37 +4,15 @@ from core.gestion.forms import *
 from django.contrib.auth.decorators import *
 
 
-
 # Create your views here.
 
 
-def Header(request):
-
-    return render(request, 'header.html')
-
-
-
-
-def Sidebar(request):
-    return render(request, 'sidebar.html')
-
-
-
-
-def Footer(request):
-    return render(request, 'footer.html')
-
-
-
 @login_required()
-def Home(request):
+def Menu_Investigaciones(request):
     Proyectos = Investigacion.objects.order_by('nombre')
     trabajador = Trabajador.objects.all() 
     title = 'Investigaciones'
-    return render(request, 'home.html',{'Proyectos':Proyectos, 'title':title, 'trabajador':trabajador})
-
-
-
+    return render(request, 'website/home.html', {'Proyectos':Proyectos, 'title':title, 'trabajador':trabajador})
 
 
 @login_required()
@@ -46,14 +24,7 @@ def Tarea_View(request, investigacion_nombre):
         if investigacion.nombre == investigacion_nombre:
             descripcion = investigacion.descripcion
             participantes = investigacion.trabajador.all()
-    return render(request, 'menu_tareas.html',{'Tareas':Tareas, 'title':title, 'investigacion_nombre':investigacion_nombre, 'descripcion':descripcion, 'participantes': participantes})
-
-
-
-
-
-
-
+    return render(request, 'website/menu_tareas.html', {'Tareas':Tareas, 'title':title, 'investigacion_nombre':investigacion_nombre, 'descripcion':descripcion, 'participantes': participantes})
 
 
 @login_required()
@@ -74,18 +45,9 @@ def Tarea_Contenido(request, tarea_nombre, nombre_usuario):
             return redirect('tarea_contenido', tarea_nombre, nombre_usuario)
     else:
         parte_hora_form = ParteForm()
-    return render(request, 'tarea.html',{'tarea_actual':tarea_actual, 'participantes': participantes, 'parte_de_horas': parte_de_horas, 'parte_horas_form': parte_hora_form, 'edicion': edicion, 'trab': trab})
+    return render(request, 'website/tarea.html', {'tarea_actual':tarea_actual, 'participantes': participantes, 'parte_de_horas': parte_de_horas, 'parte_horas_form': parte_hora_form, 'edicion': edicion, 'trab': trab})
 
 
-
-
-
-
-
-
-
-
-@permission_required('models.change_parte_hora', login_url='/')
 @login_required()
 def Editar_Parte(request, tarea_nombre, id_parte):
 
@@ -105,20 +67,9 @@ def Editar_Parte(request, tarea_nombre, id_parte):
             return redirect('tarea_contenido', tarea_nombre, nombre_usuario)
     else:
         parte_hora_form = ParteForm(instance = parte)
-    return render(request, 'tarea.html',{'tarea_actual':tarea_actual, 'participantes': participantes, 'parte_de_horas': parte_de_horas, 'parte_horas_form': parte_hora_form, 'edicion': edicion, 'id_parte': id_parte})
+    return render(request, 'website/tarea.html', {'tarea_actual':tarea_actual, 'participantes': participantes, 'parte_de_horas': parte_de_horas, 'parte_horas_form': parte_hora_form, 'edicion': edicion, 'id_parte': id_parte})
 
 
-
-
-
-
-
-
-
-
-
-
-@permission_required('models.delete_parte_hora', login_url='/')
 @login_required()
 def Eliminar_Parte(request, id_parte, tarea_nombre):
     parte = Parte_Hora.objects.get(id = id_parte)
@@ -127,15 +78,6 @@ def Eliminar_Parte(request, id_parte, tarea_nombre):
     return redirect('tarea_contenido', tarea_nombre, nombre_usuario)
 
 
-
-
-
-
-
-
-
-
-@permission_required('models.add_investigacion', login_url='/')
 @login_required()
 def Crear_Investigacion(request):
     if request.method == 'POST':
@@ -145,18 +87,10 @@ def Crear_Investigacion(request):
             return redirect('home')
     else:
         Investigacion_From = CreacionInvestigacionForm()
-    return render(request, 'crear_investigacion.html',{'Investigacion_Form': Investigacion_From})
-
-
-
-
-
-
-
+    return render(request, 'website/crear_investigacion.html', {'Investigacion_Form': Investigacion_From})
 
 
 @login_required()
-@permission_required('models.change_investigacion', login_url='/')
 def Editar_Investigacion(request, id_investigacion):
     investigacion = Investigacion.objects.get(id = id_investigacion)
     if request.method == 'POST':
@@ -166,19 +100,10 @@ def Editar_Investigacion(request, id_investigacion):
             return redirect('home')
     else:
         Edit_Investigacion_From = CreacionInvestigacionForm(instance=investigacion)
-    return render(request, 'editar_investigacion.html',{'Edit_Investigacion_Form': Edit_Investigacion_From})
-
-
-
-
-
-
-
-
+    return render(request, 'website/editar_investigacion.html', {'Edit_Investigacion_Form': Edit_Investigacion_From})
 
 
 @login_required()
-@permission_required('models.add_tarea', login_url='/')
 def Crear_Tarea(request, investigacion_nombre):
     investigacion = Investigacion.objects.filter(nombre=investigacion_nombre).first()
     if request.method == 'POST':
@@ -190,19 +115,10 @@ def Crear_Tarea(request, investigacion_nombre):
             return redirect('tarea_view', investigacion_nombre)
     else:
         Tarea_From = CreacionTareaForm()
-    return render(request, 'crear_tarea.html',{'Tarea_Form': Tarea_From})
-
-
-
-
-
-
-
-
+    return render(request, 'website/crear_tarea.html', {'Tarea_Form': Tarea_From})
 
 
 @login_required()
-@permission_required('models.change_tarea', login_url='/')
 def Editar_Tarea(request, id_tarea):
     tarea = Tarea.objects.get(id = id_tarea)
     if request.method == 'POST':
@@ -212,7 +128,7 @@ def Editar_Tarea(request, id_tarea):
             return redirect('tarea_view', tarea.investigacion)
     else:
         Edit_Tarea_From = CreacionTareaForm(instance=tarea)
-    return render(request, 'editar_tarea.html',{'Edit_Tarea_Form': Edit_Tarea_From})
+    return render(request, 'website/editar_tarea.html', {'Edit_Tarea_Form': Edit_Tarea_From})
 
 
 

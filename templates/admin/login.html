@@ -1,0 +1,34 @@
+{% extends 'admin/theme/base_login.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row" style="height: 20em;"></div>
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <h4 class="text-center">Autenticarse</h4>
+            <!-- Contenido dinámico inicio -->            
+                    <form method="POST" class="row">
+                        {% csrf_token %}
+                        <div class="ps-4 pe-4 pt-2">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" name="username" class="form-control">
+                        </div>
+                        <div class="ps-4 pe-4 pt-4">
+                            <label for="username" class="form-label">Contraseña</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+                        <div class="ps-4 pe-4 pt-4 text-end">
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </div>
+                    </form>
+            <!-- Contenido dinámico fin -->
+        </div>
+        <div class="col-5"></div>    
+    </div>
+{% endblock content %}
+
+
+
+
+
