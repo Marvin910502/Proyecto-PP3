@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -8,17 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/sidebars.css' %}">
     <link rel="stylesheet" href="{% static 'css/own.css' %}">
     <link href="{% static 'global/plugins.bundle.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'custom/prismjs/prismjs.bundle.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/sidebars.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'global/plugins.bundle.js' %}"></script>
-    <script src="{% static 'custom/prismjs/prismjs.bundle.js' %}"></script>
-    <script src="{% static 'js/scripts.bundle.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
     <title>{{ title }} | {{ section }}</title>
 
     
@@ -46,16 +40,11 @@
     <div class="row">
         {% include 'admin/theme/includes/navabar.html' %}
     </div>
-    <div class="row">
-        <div class="col-2">
-            {% include 'admin/theme/includes/sidebar.html' %}
-        </div>
-        <div class="col-10">
+    <div class="container">
         {% include 'admin/theme/includes/message.html' %}
         {% block content %}
 
         {% endblock content %}
-        </div>
     </div>
 </body>
 

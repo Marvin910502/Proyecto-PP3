@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from core.models.models import *
 from django.contrib.auth.decorators import *
+from .forms import *
 
 
 # Create your views here.
@@ -26,12 +27,20 @@ def Menu_Investigaciones(request):
 def Tarea_View(request, investigacion_nombre):
     Tareas = Tarea.objects.order_by('nombre')
     Investigaciones = Investigacion.objects.all()
-    title = 'Tareas'
     for investigacion in Investigaciones:        
         if investigacion.nombre == investigacion_nombre:
             descripcion = investigacion.descripcion
             participantes = investigacion.trabajador.all()
-    return render(request, 'website/menu_tareas.html', {'Tareas':Tareas, 'title':title, 'investigacion_nombre':investigacion_nombre, 'descripcion':descripcion, 'participantes': participantes})
+
+    context = {
+        'Tareas': Tareas,
+        'title': 'Gestor CFA',
+        'section': 'Tareas',
+        'investigacion_nombre': investigacion_nombre,
+        'descripcion': descripcion,
+        'participantes': participantes,
+    }
+    return render(request, 'website/menu_tareas.html', context)
 
 
 @login_required()

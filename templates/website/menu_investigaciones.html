@@ -3,9 +3,14 @@
 
 
 {% block content %}
+    <div class="card mt-3">
+        <div class="card-header">
+            <h2>Investigaciones</h2>
+        </div>
+    </div>
     <div class="row">
         {% for Proyecto in Proyectos %}
-            <div class="col-3 mt-4 ms-2">
+            <div class="col-4 mt-4">
                 <div class="card text-center">
                     <div class="card-header">
                       <h3 class="line-clamp">{{ Proyecto.nombre }}</h3>

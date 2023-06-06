@@ -2,11 +2,16 @@
 {% load static %}
 
 {% block content %}
+    <div class="card mt-3">
+        <div class="card-header">
+            <h2>{{ investigacion_nombre }} | Tareas</h2>
+        </div>
+    </div>
     <div class="row">
         {% block tarjetas %}
             {% for Tarea in Tareas %}
                 {% if Tarea.investigacion|stringformat:"s" == investigacion_nombre %}
-                <div class="col-3 mt-4 ms-2">
+                <div class="col-4 mt-4">
                     <div class="card text-center">
                         <div class="card-header">
                           <h3 class="line-clamp">{{ Tarea.nombre }}</h3>

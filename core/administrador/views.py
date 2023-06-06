@@ -220,15 +220,15 @@ def Editar_Usuario(request, id_user):
 
 
 @login_required()
-def Perfil(request, id_user):
-    user = User.objects.get(id=id_user)
-    trab = Trabajador.objects.filter(usuario = user).first()
+def Administrar_Permisos(request):
+    permisos = Permission.objects.all()
+    # if request.method == 'POST':
+    #     request_post = request.POST
 
     context = {
-        'trab': trab,
-        'user': user,
+        'permisos': permisos,
     }
-    return render(request, 'admin/perfil.html', context)
+    return render(request, 'admin/administrar_permisos.html', context)
 
 
 @login_required()
