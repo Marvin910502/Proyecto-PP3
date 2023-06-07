@@ -37,14 +37,16 @@
 </head>
 
 <body>
-    <div class="row">
+    <div class="row fixed-top">
         {% include 'admin/theme/includes/navabar.html' %}
     </div>
-    <div class="container">
-        {% include 'admin/theme/includes/message.html' %}
-        {% block content %}
+    <div style="margin-top: 5rem">
+        <div class="container">
+            {% include 'admin/theme/includes/message.html' %}
+            {% block content %}
 
-        {% endblock content %}
+            {% endblock content %}
+        </div>
     </div>
 </body>
 

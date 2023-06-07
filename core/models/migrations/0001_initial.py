@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Departamento',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=50, verbose_name='Nombre Departamento')),
+                ('nombre', models.CharField(max_length=100, verbose_name='Nombre Departamento')),
                 ('descripcion', models.TextField(blank=True, null=True, verbose_name='Descripción')),
             ],
             options={
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             name='Especializacion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=50, verbose_name='Nombre')),
+                ('nombre', models.CharField(max_length=100, verbose_name='Nombre')),
                 ('descripcion', models.TextField(blank=True, null=True, verbose_name='Descripción')),
             ],
             options={
@@ -87,9 +87,9 @@ class Migration(migrations.Migration):
             name='Institucion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=50, verbose_name='Nombre de Institución')),
+                ('nombre', models.CharField(max_length=150, verbose_name='Nombre de Institución')),
                 ('descripcion', models.TextField(blank=True, null=True, verbose_name='Descripción')),
-                ('direccion', models.CharField(max_length=50, verbose_name='Direccion de la Institución')),
+                ('direccion', models.TextField( verbose_name='Direccion de la Institución')),
             ],
             options={
                 'verbose_name': 'Institucion',
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
             name='Investigacion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=50, verbose_name='Nombre Investigación')),
+                ('nombre', models.CharField(max_length=150, verbose_name='Nombre Investigación')),
                 ('descripcion', models.TextField(blank=True, null=True, verbose_name='Descripción')),
                 ('fecha_comienzo', models.DateTimeField(auto_now_add=True, null=True, verbose_name='Fecha de Inicio')),
                 ('fecha_culminacion', models.DateTimeField(blank=True, null=True, verbose_name='Fecha de Culminación')),
@@ -118,7 +118,7 @@ class Migration(migrations.Migration):
             name='Nivel_Academico',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nivel_academico', models.CharField(max_length=50, verbose_name='Nivel Académico')),
+                ('nivel_academico', models.CharField(max_length=100, verbose_name='Nivel Académico')),
                 ('descripcion', models.TextField(blank=True, null=True, verbose_name='Descripción')),
             ],
             options={
@@ -199,19 +199,6 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Parte de Hora',
                 'verbose_name_plural': 'Parte de Horas',
                 'db_table': 'Parte de Hora',
-            },
-        ),
-        migrations.CreateModel(
-            name='Permiso',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.TextField(max_length=50, verbose_name='Nombre')),
-                ('usuario', models.ManyToManyField(blank=True, null=True, to=settings.AUTH_USER_MODEL, verbose_name='Usuario', related_name='user')),
-            ],
-            options={
-                'verbose_name': 'Permiso',
-                'verbose_name_plural': 'Permisos',
-                'db_table': 'Permiso',
             },
         ),
         migrations.AddField(

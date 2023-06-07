@@ -6,9 +6,9 @@ from django.contrib.auth.models import *
 
 class Institucion(models.Model):
 
-    nombre = models.CharField(verbose_name='Nombre de Institución', max_length=50)
+    nombre = models.CharField(verbose_name='Nombre de Institución', max_length=150)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)
-    direccion = models.CharField(verbose_name='Direccion de la Institución', max_length=50)
+    direccion = models.TextField(verbose_name='Direccion de la Institución')
 
 
     class Meta:
@@ -22,7 +22,7 @@ class Institucion(models.Model):
 
 class Departamento(models.Model):
 
-    nombre = models.CharField(verbose_name='Nombre Departamento', max_length=50) 
+    nombre = models.CharField(verbose_name='Nombre Departamento', max_length=100)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)  
     
     class Meta:
@@ -36,7 +36,7 @@ class Departamento(models.Model):
 
 class Nivel_Academico(models.Model):
 
-    nivel_academico = models.CharField(verbose_name='Nivel Académico', max_length=50) 
+    nivel_academico = models.CharField(verbose_name='Nivel Académico', max_length=100)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)  
 
     class Meta:
@@ -50,7 +50,7 @@ class Nivel_Academico(models.Model):
 
 class Especializacion(models.Model):
 
-    especializacion = models.CharField(verbose_name='Especialización', max_length=50, null=True, blank=True) 
+    especializacion = models.CharField(verbose_name='Especialización', max_length=100, null=True, blank=True)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)  
 
     class Meta:
@@ -64,7 +64,7 @@ class Especializacion(models.Model):
 
 class Investigacion(models.Model):
 
-    nombre = models.CharField(verbose_name='Nombre Investigación', max_length=50) 
+    nombre = models.CharField(verbose_name='Nombre Investigación', max_length=150)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)
     fecha_comienzo = models.DateTimeField(verbose_name='Fecha de Inicio', auto_now=False, auto_now_add=True, null=True, blank=True)
     fecha_culminacion = models.DateTimeField(verbose_name='Fecha de Culminación' , auto_now=False, auto_now_add=False, null=True, blank=True)  
@@ -214,19 +214,6 @@ class Tarea(models.Model):
     def __str__(self):
         return self.nombre
 
-
-class Permiso(models.Model):
-
-    nombre = models.CharField(verbose_name='Nombre Tarea', max_length=50)
-    usuario = models.ManyToManyField(User, verbose_name='Usuario', blank=True, null=True, related_name='user')
-
-    class Meta:
-        verbose_name = "Permiso"
-        verbose_name_plural = "Permisos"
-        db_table = "Permiso"
-
-    def __str__(self):
-        return self.nombre
 
 
 

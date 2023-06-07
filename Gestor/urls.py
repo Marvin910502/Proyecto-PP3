@@ -30,7 +30,6 @@ urlpatterns = [
     path('editar_usuario/<int:id_user>/', Editar_Usuario, name='editar_usuario'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', Login, name='login'),
-    path('administrar_permisos/', Administrar_Permisos, name='administrar_permisos'),
     path('menu_tareas/<str:investigacion_nombre>/', Tarea_View, name='tarea_view'),
     path('tarea/<str:tarea_nombre>/<str:nombre_usuario>', Tarea_Contenido, name='tarea_contenido'),
     path('crear_investigacion/', Crear_Investigacion, name='crear_investigacion'),

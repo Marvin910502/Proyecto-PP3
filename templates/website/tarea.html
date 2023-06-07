@@ -3,10 +3,15 @@
 
 {% block content %}
 
-    <div class="row">
-        <div class="row border border-4 p-4 mt-3">
-            <h1 class="text-center fw-bolder">{{ tarea_actual.nombre }}</h1>
+    <div class="card mt-3">
+        <div class="card-header">
+            <div class="row">
+                <h2 class="col-11">{{ tarea_actual.nombre }} | Datos y parte de horas</h2>
+                <a href="{% url 'tarea_view' tarea_actual.investigacion %}" class="col-1 mt-2 ps-4">Volver</a>
+            </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row border border-4">
             <div class="col-4 border-end border-4 p-4">
                 <h5 class="text-center fw-bolder">Tiempo Estimado:</h5>

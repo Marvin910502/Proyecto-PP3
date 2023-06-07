@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'core.administrador',
     'core.models',
     'core.gestion',
-    'channels',
 ]
 
 MIDDLEWARE = [
