@@ -1,0 +1,82 @@
+En el archivo "settings.py" del proyecto incluir 'auditlog' en las aplicaciones instaladas y incluir su middleware.
+
+INSTALLED_APPS = [
+    .....
+    'auditlog',
+]
+
+MIDDLEWARE = [
+    .....
+    'auditlog.middleware.AuditlogMiddleware',
+]
+
+
+Auditlog realiza las trazas a los modelos que se registren. 
+-Para registrarlos primero se importa:
+
+      from auditlog.registry import auditlog
+
+-luego se va registrando modelo por modelo de la siguiente manera
+
+      auditlog.register(nombre_modelo)
+
+Ejemplo:
+class Carrera(models.Model):
+      nombre = models.CharField(max_length=74, unique=True)
+      habilitado = models.BooleanField(default=True)
+
+      def __str__(self):
+            return self.nombre
+
+auditlog.register(Carrera)
+
+-Detalle: la línea que registra el modelo en auditlog no se ubica dentro del modelo
+
+
+-De esta manera estoy renderizando las trazas. Los encabezados pueden variarse a entender de cada cual. Recurso es la representación textual del objeto de la tabla que está siendo creado o modificado. Cambios son los campos de ese objeto que están siendo afectados.
+<table class="table">
+            <thead>
+                <tr>
+                     <th>Creado</th>
+                     <th>Usuario</th>
+                     <th>Tabla</th>
+                     <th>Acción</th>
+                     <th>Recurso</th>
+                     <th style="width: 50%;">Cambios</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for traza in trazas %}
+                 <tr>
+                     <td>{{ traza.timestamp|date:"Y/m/d, h:i a" }}</td>
+                     <td>{{ traza.actor }}</td>
+                     <td>{{ traza.content_type.name }}</td>
+                     <td>
+                             {% if traza.action == 0 %}
+                                  crear
+                             {% elif traza.action == 1 %}
+                                  actualizar
+                             {% else %}
+                                  borrar
+                             {% endif %}
+                     </td>
+                      <td>{{ traza.object_repr }}</td>
+                      <td class="separar">
+	           {% for c in traza.changes_dict %}
+                                   {{ c }}
+	           {% endfor %}
+                      </td>
+                 </tr>    
+                {% endfor %}
+            </tbody>
+</table>
+
+-Con este código jquery cambio los espacios entre los elementos de los cambios por comas(,)
+<script>
+    $(document).ready(function () {
+          $('.separar').text(function () {
+                texto = $.trim($(this).text());
+                return texto.replaceAll(' ', ', ');
+          })
+    })
+</script>

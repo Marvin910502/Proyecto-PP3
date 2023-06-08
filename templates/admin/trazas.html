@@ -1,0 +1,30 @@
+{% extends 'admin/theme/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row mt-5 me-4">
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Nombre y Apallidos</th>
+                <th>Nombre de Usuario</th>
+                <th>Carnet de Identidad</th>
+                <th>Institución</th>
+                <th>Departamento</th>
+                <th>Horas Ocupadas</th>
+                <th></th>
+            </tr>
+            {% for trabajador in Trab %}
+            <tr>
+                <td>{{ trabajador.nombre }} {{ trabajador.apellidos }}</td>
+                <td>{{ trabajador.usuario.username }}</td>
+                <td>{{ trabajador.ci }}</td>
+                <td>{{ trabajador.institucion.nombre }}</td>
+                <td>{{ trabajador.departamento.nombre }}</td>
+                <td {% if trabajador.horas_ocupadas >= 160 %}style="color: red"{% endif %}>{{ trabajador.horas_ocupadas }} Horas</td>
+                <td><a href="{% url 'editar_usuario' trabajador.usuario.id %}" class="btn btn-success">Editar</a></td>
+            </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+{% endblock content %}
