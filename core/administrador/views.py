@@ -23,7 +23,9 @@ def Login(request):
     }
     return render(request, 'admin/login.html', context)
 
+
 @login_required()
+@permission_required('auth.add_user')
 def Crear_Usuario(request):
     message, class_alert = check_session_message(request)
     permisos = Permission.objects.all()
@@ -120,6 +122,8 @@ def Crear_Usuario(request):
     return render(request, 'admin/crear_usuario.html', context)
 
 
+@login_required()
+@permission_required('auth.delete_user')
 def Eliminar_Usuario(request, id_user):
     usuario = User.objects.filter(id=id_user).first()
     trabajador = Trabajador.objects.filter(usuario_id=id_user).first()
@@ -129,6 +133,7 @@ def Eliminar_Usuario(request, id_user):
 
 
 @login_required()
+@permission_required('auth.change_user')
 def Editar_Usuario(request, id_user):
     message, class_alert = check_session_message(request)
     permisos = Permission.objects.all()
@@ -243,6 +248,9 @@ def Editar_Usuario(request, id_user):
 
 
 @login_required()
+@permission_required('auth.change_user')
+@permission_required('auth.delete_user')
+@permission_required('auth.add_user')
 def Lista_Usuarios(request):
     Trab = Trabajador.objects.order_by('nombre')
 
@@ -264,6 +272,8 @@ def check_session_message(request):
         return None, None
 
 
+@login_required()
+@permission_required('admin.view_logentry')
 def Trazas(request):
     trazas = LogEntry.objects.all()
 
@@ -275,6 +285,9 @@ def Trazas(request):
     return render(request, 'admin/trazas.html', context)
 
 
+@login_required()
+@permission_required('models.add_institucion')
+@permission_required('models.change_institucion')
 def Instituciones(request):
     instituciones = Institucion.objects.all().order_by('nombre')
 
@@ -301,6 +314,9 @@ def Instituciones(request):
     return render(request, 'admin/instituciones.html', context)
 
 
+@login_required()
+@permission_required('models.add_departamento')
+@permission_required('models.change_departamento')
 def Departamentos(request):
     departamentos = Departamento.objects.all().order_by('nombre')
 
@@ -325,6 +341,9 @@ def Departamentos(request):
     return render(request, 'admin/departamentos.html', context)
 
 
+@login_required()
+@permission_required('models.add_nivel_academico')
+@permission_required('models.change_nivel_academico')
 def Niveles_Academicos(request):
     niveles_academicos = Nivel_Academico.objects.all().order_by('nivel_academico')
 
@@ -349,6 +368,9 @@ def Niveles_Academicos(request):
     return render(request, 'admin/nivel_academico.html', context)
 
 
+@login_required()
+@permission_required('models.add_especializacion')
+@permission_required('models.change_especializacion')
 def Especializaciones(request):
     especializaciones = Especializacion.objects.all().order_by('especializacion')
 
@@ -373,24 +395,32 @@ def Especializaciones(request):
     return render(request, 'admin/especializaciones.html', context)
 
 
+@login_required()
+@permission_required('models.delete_institucion')
 def Eliminar_Institucion(request, id):
     institucion = Institucion.objects.filter(id=id).first()
     institucion.delete()
     return redirect('instituciones')
 
 
+@login_required()
+@permission_required('models.delete_departamento')
 def Eliminar_Departamento(request, id):
     departamento = Departamento.objects.filter(id=id).first()
     departamento.delete()
     return redirect('departamentos')
 
 
+@login_required()
+@permission_required('models.delete_nivel_academico')
 def Eliminar_Nivel_Academico(request, id):
     nivel_academico = Nivel_Academico.objects.filter(id=id).first()
     nivel_academico.delete()
     return redirect('niveles_academicos')
 
 
+@login_required()
+@permission_required('models.delete_especializacion')
 def Eliminar_Especializacion(request, id):
     especializacion = Especializacion.objects.filter(id=id).first()
     especializacion.delete()

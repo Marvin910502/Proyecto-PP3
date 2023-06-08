@@ -7,6 +7,7 @@ from .forms import *
 # Create your views here.
 
 
+
 @login_required()
 def Menu_Investigaciones(request):
     usuario_login = request.user
@@ -60,13 +61,16 @@ def Tarea_Contenido(request, tarea_nombre, nombre_usuario):
             parte.save()
             return redirect('tarea_contenido', tarea_nombre, nombre_usuario)
     else:
+
+
         parte_hora_form = ParteForm()
+        pass
 
     context = {
         'tarea_actual': tarea_actual,
         'participantes': participantes,
         'parte_de_horas': parte_de_horas,
-        'parte_horas_form': parte_hora_form,
+        'parte_hora_form': parte_hora_form,
         'edicion': edicion,
         'trab': trab,
         'title': 'Gestor CFA',
@@ -106,6 +110,8 @@ def Eliminar_Parte(request, id_parte, tarea_nombre):
 
 
 @login_required()
+@permission_required('models.change_investigacion')
+@permission_required('models.add_investigacion')
 def Crear_Investigacion(request):
     trabajador = Trabajador.objects.filter(usuario__username=request.user.username).first()
     if request.method == 'POST':
@@ -126,7 +132,10 @@ def Crear_Investigacion(request):
     return render(request, 'website/crear_investigacion.html', context)
 
 
+
 @login_required()
+@permission_required('models.change_investigacion')
+@permission_required('models.add_investigacion')
 def Editar_Investigacion(request, id_investigacion):
     investigacion = Investigacion.objects.filter(id=id_investigacion).first()
     trabajador = Trabajador.objects.filter(id=request.user.id).first()
@@ -152,6 +161,7 @@ def Editar_Investigacion(request, id_investigacion):
         Edit_Investigacion_From = EdicionInvestigacionForm(instance=investigacion, trabajador=trabajador, investigacion=investigacion)
 
     context = {
+        'investigacion': investigacion,
         'Edit_Investigacion_Form': Edit_Investigacion_From,
         'title': 'Gestor CFA',
         'section': 'Editar Investigación',
@@ -160,6 +170,8 @@ def Editar_Investigacion(request, id_investigacion):
 
 
 @login_required()
+@permission_required('models.add_tarea')
+@permission_required('models.change_tarea')
 def Crear_Tarea(request, investigacion_nombre):
     investigacion = Investigacion.objects.filter(nombre=investigacion_nombre).first()
     if request.method == 'POST':
@@ -183,6 +195,8 @@ def Crear_Tarea(request, investigacion_nombre):
 
 
 @login_required()
+@permission_required('models.change_tarea')
+@permission_required('models.add_tarea')
 def Editar_Tarea(request, id_tarea):
     tarea = Tarea.objects.get(id=id_tarea)
     if request.method == 'POST':
@@ -204,15 +218,53 @@ def Editar_Tarea(request, id_tarea):
     return render(request, 'website/editar_tarea.html', context)
 
 
+@login_required()
+@permission_required('models.delete_investigacion')
+@permission_required('models.delete_tarea')
 def Eliminar_Tarea(request, tarea_id):
     tarea = Tarea.objects.filter(id=tarea_id).first()
     tarea.delete()
     return redirect('tarea_view', tarea.investigacion.nombre)
 
 
+@login_required()
+@permission_required('models.delete_investigacion')
+@permission_required('models.delete_tarea')
+def Eliminar_Investigacion(request, id_investigacion):
+    investigacion = Investigacion.objects.filter(id=id_investigacion).first()
+    investigacion.delete()
+    return redirect('menu_investigaciones')
+
+
+@login_required()
+def Lista_Trabajadores(request):
+    Trab = Trabajador.objects.order_by('nombre')
+
+    context = {
+        'Trab': Trab,
+        'title': 'Gestor CFA',
+        'section': 'Lista de Usuarios',
+    }
+    return render(request, 'website/trabajadores.html', context)
 
 
 
+@login_required()
+def Trabajador_Perfil(request, id_trabajador):
+    trab = Trabajador.objects.filter(id=id_trabajador).first()
+    user = User.objects.filter(trabajador=trab).first()
+    investigaciones = Investigacion.objects.filter(trabajador=trab)
+    tareas = Tarea.objects.filter(trabajador=trab)
+
+    context = {
+        'trab': trab,
+        'user': user,
+        'title': 'Gestor CFA',
+        'section': trab.nombre,
+        'investigaciones': investigaciones,
+        'tareas': tareas,
+    }
+    return render(request, 'website/trabajador.html', context)
 
 
 

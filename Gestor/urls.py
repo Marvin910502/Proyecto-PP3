@@ -48,4 +48,7 @@ urlpatterns = [
     path('eliminar_departamento/<int:id>', Eliminar_Departamento, name='eliminar_departamento'),
     path('eliminar_nivel_academico/<int:id>', Eliminar_Nivel_Academico, name='eliminar_nivel_academico'),
     path('eliminar_especializacion/<int:id>', Eliminar_Especializacion, name='eliminar_especializacion'),
+    path('eliminar_investigacion/<int:id_investigacion>', Eliminar_Investigacion, name='eliminar_investigacion'),
+    path('trabajadores/', Lista_Trabajadores, name='trabajadores'),
+    path('trabajador/<int:id_trabajador>', Trabajador_Perfil, name='trabajador'),
 ]

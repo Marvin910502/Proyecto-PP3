@@ -6,14 +6,19 @@
     <div class="align-content-end">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-content-end">
             <li class="nav-item">
+              <a class="nav-link" href="/trabajadores/">Trabajadores</a>
+            </li>
+            {% if perms.auth.add_user %}
+            <li class="nav-item">
               <a class="nav-link" href="/menu_usuarios/">Administrar</a>
             </li>
+            {% endif %}
             <li class="nav-item dropdown me-5">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   {{ user }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'editar_usuario' user.id %}">Perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'trabajador' user.id %}">Perfil</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/logout/">Salir</a></li>
               </ul>

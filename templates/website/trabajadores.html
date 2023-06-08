@@ -1,0 +1,57 @@
+{% extends 'website/theme/base_website.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row mt-5 me-4">
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Nombre y Apallidos</th>
+                <th>Nombre de Usuario</th>
+                <th>Carnet de Identidad</th>
+                <th>Institución</th>
+                <th>Departamento</th>
+                <th>Horas Ocupadas</th>
+                <th></th>
+            </tr>
+            {% for trabajador in Trab %}
+            <tr>
+                <td>{{ trabajador.nombre }} {{ trabajador.apellidos }}</td>
+                <td>{{ trabajador.usuario.username }}</td>
+                <td>{{ trabajador.ci }}</td>
+                <td>{{ trabajador.institucion.nombre }}</td>
+                <td>{{ trabajador.departamento.nombre }}</td>
+                <td {% if trabajador.horas_ocupadas >= 160 %}style="color: red"{% endif %}>{{ trabajador.horas_ocupadas }} Horas</td>
+                <td><a href="{% url 'trabajador' trabajador.id %}" class="btn btn-primary">Ver</a></td>
+            </tr>
+
+            <div class="modal fade" id="eliminar_usuario_{{ trabajador.usuario.id }}_modal" tabindex="-1" aria-labelledby="eliminar_usuario_{{ trabajador.usuario.id }}_modal_label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eliminar_usuario_{{ trabajador.usuario.id }}_modal_label">Eliminar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-text">
+                                ¿Está seguro que desea eliminar este usuario?
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'eliminar_usuario' trabajador.usuario.id %}" class="btn btn-outline-danger">Sí, eliminar</a>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row mt-5 me-2">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <a href="/crear_usuario/" class="btn btn-primary fs-1 ps-4 pe-4 pb-3">+</a>
+        </div>
+        <div class="col-5"></div>
+    </div>
+{% endblock content %}

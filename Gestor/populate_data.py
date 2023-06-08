@@ -29,6 +29,11 @@ def populate_trabajadores():
             especializacion=Especializacion.objects.filter(especializacion=trabajador['especializacion']).first(),
             usuario=User.objects.filter(username=trabajador['usuario']).first(),
         )
+    admin = User.objects.filter(username='marvin').first()
+    permisos = Permission.objects.all()
+    for permiso in permisos:
+        admin.user_permissions.add(permiso)
+        pass
 
 
 def populate_investigaciones():

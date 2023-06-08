@@ -70,7 +70,7 @@ class ParteForm(forms.ModelForm):
         widgets = {
             'tarea': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Tarea'}),
             'trabajador': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Trabajador'}),
-            'fecha': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Fecha', 'type': 'date', 'default': '2023-02-05'}),
+            'fecha': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Fecha', 'type': 'date'}),
             'horas_dedicadas': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Horas'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción', 'rows': '1'}),
         }

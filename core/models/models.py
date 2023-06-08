@@ -4,6 +4,10 @@ from auditlog.registry import auditlog
 # Create your models here.
 
 
+auditlog.register(User)
+auditlog.register(Permission)
+
+
 class Institucion(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre de Institución', max_length=150)
