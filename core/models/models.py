@@ -66,9 +66,9 @@ class Investigacion(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre Investigación', max_length=150)
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)
-    fecha_comienzo = models.DateTimeField(verbose_name='Fecha de Inicio', auto_now=False, auto_now_add=True, null=True, blank=True)
-    fecha_culminacion = models.DateTimeField(verbose_name='Fecha de Culminación' , auto_now=False, auto_now_add=False, null=True, blank=True)  
-    completado = models.IntegerField(verbose_name='Porciento completado', null=True, blank=True, default=0)
+    fecha_comienzo = models.DateTimeField(verbose_name='Fecha de Inicio', auto_now=False, auto_now_add=True)
+    fecha_culminacion = models.DateTimeField(verbose_name='Fecha de Culminación', auto_now=False, auto_now_add=False, null=True, blank=True)
+    horas_mensuales_necesarias = models.PositiveIntegerField(verbose_name='Horas Mensuales Necesarias')
     trabajador = models.ManyToManyField('Trabajador', verbose_name='Trabajador', related_name='investigacion', blank=True)
     activo = models.BooleanField(verbose_name='Activo', default=False)
     
@@ -154,7 +154,6 @@ class Trabajador(models.Model):
     ('Otro', 'otro'),
     ]
 
-
     nombre = models.CharField(verbose_name= 'Nombre', max_length=50, null=True, blank=True)
     apellidos = models.CharField(verbose_name='Apellidos', max_length=100, null=True, blank=True)
     ci = models.CharField(verbose_name='Carnet de Identidad', max_length=11)
@@ -170,6 +169,15 @@ class Trabajador(models.Model):
         verbose_name = "Trabajador"
         verbose_name_plural = "Trabajadores"
         db_table = "Trabajador"
+
+
+    def horas(self):
+        horas_totales = 0
+        for instigacion in Investigacion.objects.filter(trabajador=self):
+            horas = instigacion.horas_mensuales_necesarias / instigacion.trabajador.count()
+            horas_totales = horas_totales + horas
+        self.horas_ocupadas = horas_totales
+        self.save()
 
     def __str__(self):
         return f'{self.nombre} {self.apellidos}'
@@ -195,16 +203,16 @@ class Parte_Hora(models.Model):
 class Tarea(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre Tarea', max_length=50) 
-    horas_necesarias = models.IntegerField(verbose_name='Cantidad de Horas Necesarias')
+    horas_necesarias = models.PositiveIntegerField(verbose_name='Cantidad de Horas Necesarias')
     descripcion = models.TextField(verbose_name='Descripción', null=True, blank=True)
-    investigacion = models.ForeignKey("Investigacion", verbose_name='Investigación', on_delete=models.CASCADE, null=True, blank=True)
+    investigacion = models.ForeignKey("Investigacion", verbose_name='Investigación', null=True, blank=True, on_delete=models.CASCADE)
     evento = models.ForeignKey("Evento", verbose_name='Evento', on_delete=models.CASCADE, null=True, blank=True)
     publicacion = models.ForeignKey("Publicacion", verbose_name='Publicación', on_delete=models.CASCADE, null=True, blank=True)
     informe_sem = models.ForeignKey("Informe_Semestral_Resultados", verbose_name='Informe Semestral de Resultados', on_delete=models.CASCADE, null=True, blank=True)
     informe_final = models.ForeignKey("Informe_Final_Resultados", verbose_name='Informe Final de Resultados', on_delete=models.CASCADE, null=True, blank=True)
-    fecha_comienzo = models.DateTimeField(verbose_name='Fecha de Inicio', auto_now=False, auto_now_add=True, null=True, blank=True)
-    fecha_culminacion = models.DateTimeField(verbose_name='Fecha de Culminación' , auto_now=False, auto_now_add=False, null=True, blank=True)  
-    trabajador = models.ManyToManyField(Trabajador,verbose_name='Trabajador', blank=True, related_name='tarea')
+    fecha_comienzo = models.DateTimeField(verbose_name='Fecha de Inicio', auto_now=False, auto_now_add=True)
+    fecha_culminacion = models.DateTimeField(verbose_name='Fecha de Culminación', auto_now=False, auto_now_add=False, null=True, blank=True)
+    trabajador = models.ManyToManyField(Trabajador, verbose_name='Trabajador', blank=True, related_name='tarea')
 
     class Meta:
         verbose_name = "Tarea"

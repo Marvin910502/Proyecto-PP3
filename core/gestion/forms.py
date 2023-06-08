@@ -1,6 +1,7 @@
 from django import forms
 from core.models.models import *
 from django.contrib.auth.models import *
+from django.db.models import Q
 
 
 class DateInput(forms.DateInput):
@@ -14,24 +15,41 @@ class DateTimeInput(forms.DateTimeInput):
 class CreacionInvestigacionForm(forms.ModelForm):
     class Meta:
         model = Investigacion
-        fields = ['nombre', 'descripcion', 'completado','trabajador'] 
+        fields = ['nombre', 'descripcion', 'horas_mensuales_necesarias', 'trabajador']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
-            'completado': forms.NumberInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+            'horas_mensuales_necesarias': forms.NumberInput(attrs={'class': 'form-control'}),
             'trabajador': forms.CheckboxSelectMultiple(),
 
         }  
 
     def __init__(self, *args, trabajador, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['trabajador'].queryset = Trabajador.objects.exclude(id=trabajador).order_by('nombre')
+        self.fields['trabajador'].queryset = Trabajador.objects.filter(horas_ocupadas__lt=50).exclude(id=trabajador.id).order_by('nombre')
+
+
+class EdicionInvestigacionForm(forms.ModelForm):
+    class Meta:
+        model = Investigacion
+        fields = ['nombre', 'descripcion', 'horas_mensuales_necesarias', 'trabajador']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+            'horas_mensuales_necesarias': forms.NumberInput(attrs={'class': 'form-control'}),
+            'trabajador': forms.CheckboxSelectMultiple(),
+
+        }
+
+    def __init__(self, *args, trabajador, investigacion,**kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['trabajador'].queryset = Trabajador.objects.exclude(Q(horas_ocupadas__gte=50) & ~Q(investigacion=investigacion)).order_by('nombre')
 
 
 class CreacionTareaForm(forms.ModelForm):
     class Meta:
         model = Tarea
-        exclude = ['evento', 'publicacion', 'informe_sem', 'informe_final','investigacion','fecha_culminacion']
+        exclude = ['evento', 'publicacion', 'informe_sem', 'informe_final', 'investigacion', 'fecha_culminacion']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control'}),

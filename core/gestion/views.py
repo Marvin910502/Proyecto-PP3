@@ -109,14 +109,14 @@ def Eliminar_Parte(request, id_parte, tarea_nombre):
 def Crear_Investigacion(request):
     trabajador = Trabajador.objects.filter(usuario__username=request.user.username).first()
     if request.method == 'POST':
-        Investigacion_From = CreacionInvestigacionForm(request.POST, trabajador=trabajador.id)
+        Investigacion_From = CreacionInvestigacionForm(request.POST, trabajador=trabajador)
         if Investigacion_From.is_valid():
             Investigacion_From.save()
             investigacion = Investigacion.objects.filter(nombre=request.POST['nombre']).first()
             investigacion.trabajador.add(trabajador)
             return redirect('menu_investigaciones')
     else:
-        Investigacion_From = CreacionInvestigacionForm(trabajador=trabajador.id)
+        Investigacion_From = CreacionInvestigacionForm(trabajador=trabajador)
 
     context = {
         'Investigacion_Form': Investigacion_From,
@@ -128,16 +128,28 @@ def Crear_Investigacion(request):
 
 @login_required()
 def Editar_Investigacion(request, id_investigacion):
-    investigacion = Investigacion.objects.get(id=id_investigacion)
+    investigacion = Investigacion.objects.filter(id=id_investigacion).first()
     trabajador = Trabajador.objects.filter(id=request.user.id).first()
     if request.method == 'POST':
-        Edit_Investigacion_From = CreacionInvestigacionForm(request.POST, instance=investigacion, trabajador=trabajador.id)
+        Edit_Investigacion_From = EdicionInvestigacionForm(request.POST, instance=investigacion, trabajador=trabajador, investigacion=investigacion)
         if Edit_Investigacion_From.is_valid():
             Edit_Investigacion_From.save()
             investigacion.trabajador.add(trabajador)
+            trabajadores = Trabajador.objects.all()
+            for trabajador in trabajadores:
+                trabajador.horas()
+            investigaciones = Investigacion.objects.all()
+            for investigacion in investigaciones:
+                tareas = Tarea.objects.filter(investigacion=investigacion)
+                for tarea in tareas:
+                    participantes = tarea.trabajador.all()
+                    for participante in participantes:
+                        if not investigacion.trabajador.filter(id=participante.id).first():
+                            tarea.trabajador.remove(participante)
+
             return redirect('menu_investigaciones')
     else:
-        Edit_Investigacion_From = CreacionInvestigacionForm(instance=investigacion, trabajador=trabajador.id)
+        Edit_Investigacion_From = EdicionInvestigacionForm(instance=investigacion, trabajador=trabajador, investigacion=investigacion)
 
     context = {
         'Edit_Investigacion_Form': Edit_Investigacion_From,
@@ -187,8 +199,16 @@ def Editar_Tarea(request, id_tarea):
         'section': 'Editar Tarea',
         'investigacion_nombre': tarea.investigacion,
         'investigacion': tarea.investigacion,
+        'tarea': tarea,
     }
     return render(request, 'website/editar_tarea.html', context)
+
+
+def Eliminar_Tarea(request, tarea_id):
+    tarea = Tarea.objects.filter(id=tarea_id).first()
+    tarea.delete()
+    return redirect('tarea_view', tarea.investigacion.nombre)
+
 
 
 

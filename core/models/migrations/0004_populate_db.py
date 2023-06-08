@@ -9,6 +9,7 @@ def populate_data(apps, schema_editor):
     populate_trabajadores()
     populate_investigaciones()
     populate_tareas()
+    populate_horas_ocupadas()
 
 
 class Migration(migrations.Migration):

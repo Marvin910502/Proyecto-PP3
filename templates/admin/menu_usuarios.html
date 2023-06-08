@@ -10,7 +10,7 @@
                 <th>Carnet de Identidad</th>
                 <th>Institución</th>
                 <th>Departamento</th>
-                <th>Especialización</th>
+                <th>Horas Ocupadas</th>
                 <th></th>
             </tr>
             {% for trabajador in Trab %}
@@ -20,7 +20,7 @@
                 <td>{{ trabajador.ci }}</td>
                 <td>{{ trabajador.institucion.nombre }}</td>
                 <td>{{ trabajador.departamento.nombre }}</td>
-                <td>{{ trabajador.especializacion.especializacion }}</td>
+                <td {% if trabajador.horas_ocupadas >= 160 %}style="color: red"{% endif %}>{{ trabajador.horas_ocupadas }} Horas</td>
                 <td><a href="{% url 'editar_usuario' trabajador.usuario.id %}" class="btn btn-success">Editar</a></td>
             </tr>
 

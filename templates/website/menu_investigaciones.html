@@ -16,7 +16,7 @@
                       <h3 class="card-title">{{ Proyecto.nombre }}</h3>
                     </div>
                     <div class="card-body">
-                      <h5>{{ Proyecto.completado }}%</h5>
+                      <h5>{{ Proyecto.horas_mensuales_necesarias }} Horas Mensuales</h5>
                       <p class="card-text" style="min-height: 3rem">{{ Proyecto.descripcion }}</p>
                       <a href="{% url 'tarea_view' Proyecto.nombre %}" class="btn btn-primary">Entrar</a>
                       <a href="{% url 'editar_investigacion' Proyecto.id %}" class="btn btn-success">Editar</a>

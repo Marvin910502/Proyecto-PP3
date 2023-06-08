@@ -10,8 +10,31 @@
             <form method="POST">
                 {% csrf_token %}
                 {{ Edit_Tarea_Form.as_p }}
-                <button type="submit" class="btn btn-success">Salvar</button>
+                <div class="mt-3 mb-5">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a class="btn btn-danger form-control-sm ms-2" data-bs-toggle="modal" data-bs-target="#eliminar_usuario_{{ tarea.id }}_modal">Eliminar</a>
+                </div>
             </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="eliminar_tarea_{{ tarea.id }}_modal" tabindex="-1" aria-labelledby="eliminar_tarea_{{ tarea.id }}_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminar_usuario_{{ usuario.id }}_modal_label">Eliminar Tarea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-text">
+                        ¿Está seguro que desea eliminar esta tarea?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-outline-danger">Sí, eliminar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}

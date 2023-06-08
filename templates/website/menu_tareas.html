@@ -15,8 +15,7 @@
                     <p>{{ investigacion.descripcion }}</p>
                 </div>
                 <div class="col-2 border p-2">
-                    <h3>Completado:</h3>
-                    <p class="text-center fs-3">{{ investigacion.completado }}%</p>
+                    <p class="text-center fs-3">{{ investigacion.horas_mensuales_necesarias }} Horas Mensuales</p>
                 </div>
             </div>
             <div class="row border">
@@ -46,9 +45,9 @@
                         <div class="card-header">
                           <h3 class="card-title">{{ Tarea.nombre }}</h3>
                         </div>
-                        <div class="card-body" style="min-height: 10rem">
+                        <div class="card-body">
                           <h5>{{ Tarea.horas_necesarias }} Horas</h5>
-                          <p class="card-text">{{ Tarea.descripcion }}</p>
+                          <p class="card-text" style="min-height: 3rem">{{ Tarea.descripcion }}</p>
                           <a href="{% url 'tarea_contenido' Tarea.nombre user.username %}" class="btn btn-primary">Entrar</a>
                           <a href="{% url 'editar_tarea' Tarea.id %}" class="btn btn-success">Editar</a>
                         </div>
@@ -67,7 +66,7 @@
     <div class="row mt-5 me-2">
         <div class="col-5"></div>
         <div class="col-2">
-            <a href="{% url 'crear_tarea' investigacion_nombre %}" class="btn btn-primary fs-1 ps-4 pe-4 pb-3">+</a>
+            <a href="{% url 'crear_tarea' investigacion_nombre %}" class="btn btn-primary fs-1 ps-4 pe-4 pb-3 mb-5">+</a>
         </div>
         <div class="col-5"></div>
     </div>

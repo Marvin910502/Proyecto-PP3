@@ -37,7 +37,7 @@ def populate_investigaciones():
             nombre=investigacion['nombre'],
             descripcion=investigacion['descripcion'],
             fecha_culminacion=investigacion['fecha_culminacion'],
-            completado=investigacion['completado'],
+            horas_mensuales_necesarias=investigacion['horas_mensuales_necesarias'],
         )
         invest.trabajador.add(Trabajador.objects.filter(nombre=investigacion['trabajador1']).first())
         invest.trabajador.add(Trabajador.objects.filter(nombre=investigacion['trabajador2']).first())
@@ -66,3 +66,9 @@ def populate_tareas():
         tar = Tarea.objects.filter(nombre=tarea['nombre']).first()
         tar.fecha_comienzo = tarea['fecha_comienzo']
         tar.save()
+
+
+def populate_horas_ocupadas():
+    trabajadores = Trabajador.objects.all()
+    for trabajador in trabajadores:
+        trabajador.horas()
