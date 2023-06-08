@@ -26,7 +26,7 @@ class CreacionInvestigacionForm(forms.ModelForm):
 
     def __init__(self, *args, trabajador, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['trabajador'].queryset = Trabajador.objects.filter(horas_ocupadas__lt=50).exclude(id=trabajador.id).order_by('nombre')
+        self.fields['trabajador'].queryset = Trabajador.objects.filter(horas_ocupadas__lt=160).exclude(id=trabajador.id).order_by('nombre')
 
 
 class EdicionInvestigacionForm(forms.ModelForm):
@@ -43,7 +43,7 @@ class EdicionInvestigacionForm(forms.ModelForm):
 
     def __init__(self, *args, trabajador, investigacion,**kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['trabajador'].queryset = Trabajador.objects.exclude(Q(horas_ocupadas__gte=50) & ~Q(investigacion=investigacion)).order_by('nombre')
+        self.fields['trabajador'].queryset = Trabajador.objects.exclude(Q(horas_ocupadas__gte=160) & ~Q(investigacion=investigacion)).order_by('nombre')
 
 
 class CreacionTareaForm(forms.ModelForm):
