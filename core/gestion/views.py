@@ -53,9 +53,9 @@ def Tarea_Contenido(request, tarea_nombre, nombre_usuario):
     trab = Trabajador.objects.filter(usuario = user).first()
     edicion = False
     if request.method == 'POST':
-        parte_hora_form = ParteForm(request.POST)
-        if parte_hora_form.is_valid():
-            parte = parte_hora_form.save(commit=False)
+        parte_horas_form = ParteForm(request.POST)
+        if parte_horas_form.is_valid():
+            parte = parte_horas_form.save(commit=False)
             parte.tarea = tarea_actual
             parte.trabajador = trab
             parte.save()
@@ -63,14 +63,14 @@ def Tarea_Contenido(request, tarea_nombre, nombre_usuario):
     else:
 
 
-        parte_hora_form = ParteForm()
+        parte_horas_form = ParteForm()
         pass
 
     context = {
         'tarea_actual': tarea_actual,
         'participantes': participantes,
         'parte_de_horas': parte_de_horas,
-        'parte_hora_form': parte_hora_form,
+        'parte_horas_form': parte_horas_form,
         'edicion': edicion,
         'trab': trab,
         'title': 'Gestor CFA',

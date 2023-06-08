@@ -143,9 +143,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DATE_INPUT_FORMATS = ['%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', ]
 
 
-
-DATE_INPUT_FORMATS = (
-    '%d/%m/%Y',  # '21/03/2014'
-)
