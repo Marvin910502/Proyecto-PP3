@@ -4,6 +4,7 @@ from core.models.models import *
 from django.contrib.auth.decorators import *
 from hmac import compare_digest
 from Gestor.globals import SUCCESS_MESSAGE, DANGER_MESSAGE, WARNING_MESSAGE
+from auditlog.models import *
 
 # Create your views here.
 
@@ -261,3 +262,14 @@ def check_session_message(request):
         return message, class_alert
     else:
         return None, None
+
+
+def Trazas(request):
+    trazas = LogEntry.objects.all()
+
+    context = {
+        "trazas": trazas,
+        "title": 'Gestor CFA',
+        "section": 'Trazas'
+    }
+    return render(request, 'admin/trazas.html', context)

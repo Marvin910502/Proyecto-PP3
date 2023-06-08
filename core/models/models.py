@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import *
-
+from auditlog.registry import auditlog
 # Create your models here.
 
 
@@ -20,6 +20,9 @@ class Institucion(models.Model):
         return self.nombre
 
 
+auditlog.register(Institucion)
+
+
 class Departamento(models.Model):
 
     nombre = models.CharField(verbose_name='Nombre Departamento', max_length=100)
@@ -32,6 +35,9 @@ class Departamento(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+auditlog.register(Departamento)
 
 
 class Nivel_Academico(models.Model):
@@ -48,6 +54,9 @@ class Nivel_Academico(models.Model):
         return self.nivel_academico
 
 
+auditlog.register(Nivel_Academico)
+
+
 class Especializacion(models.Model):
 
     especializacion = models.CharField(verbose_name='Especialización', max_length=100, null=True, blank=True)
@@ -60,6 +69,9 @@ class Especializacion(models.Model):
 
     def __str__(self):
         return self.especializacion
+
+
+auditlog.register(Especializacion)
 
 
 class Investigacion(models.Model):
@@ -79,6 +91,9 @@ class Investigacion(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+auditlog.register(Investigacion)
 
 
 class Evento(models.Model):
@@ -170,7 +185,6 @@ class Trabajador(models.Model):
         verbose_name_plural = "Trabajadores"
         db_table = "Trabajador"
 
-
     def horas(self):
         horas_totales = 0
         for instigacion in Investigacion.objects.filter(trabajador=self):
@@ -181,6 +195,9 @@ class Trabajador(models.Model):
 
     def __str__(self):
         return f'{self.nombre} {self.apellidos}'
+
+
+auditlog.register(Trabajador)
 
 
 class Parte_Hora(models.Model):
@@ -198,6 +215,9 @@ class Parte_Hora(models.Model):
 
     def __int__(self):
         return self.id
+
+
+auditlog.register(Parte_Hora)
 
 
 class Tarea(models.Model):
@@ -223,6 +243,7 @@ class Tarea(models.Model):
         return self.nombre
 
 
+auditlog.register(Tarea)
 
 
 

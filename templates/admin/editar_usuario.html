@@ -67,8 +67,8 @@
                     {% for permiso in permisos %}
                         <div class="row">
                             <div class="col">
-                                <label class="form-check-label ms-2 mt-2">{{ permiso.content_type }} {{ permiso.codename }}</label>
-                                <input class="form-check-inline ms-2" type="checkbox" value="{{ permiso.id }}" name="{{ permiso.id }}" {% if permiso.id in permisos_list %} checked {% endif %}">
+                                <input class="form-check-inline ms-2" type="checkbox" value="{{ permiso.id }}" name="{{ permiso.id }}" {% if permiso.id in permisos_list %}checked{% endif %}>
+                                <label class="form-check-label ms-2 mt-2">{{ permiso.content_type }} {{ permiso.name }}</label>
                             </div>
                         </div>
                     {% endfor %}

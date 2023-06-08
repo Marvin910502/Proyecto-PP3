@@ -2,29 +2,42 @@
 {% load static %}
 
 {% block content %}
-    <div class="row mt-5 me-4">
+    <div class="card mt-3">
+        <div class="card-header">
+            <h2>Trazas</h2>
+        </div>
+    </div>
+    <div class="row mt-2">
         <table class="table table-striped table-hover">
             <tr>
-                <th>Nombre y Apallidos</th>
-                <th>Nombre de Usuario</th>
-                <th>Carnet de Identidad</th>
-                <th>Institución</th>
-                <th>Departamento</th>
-                <th>Horas Ocupadas</th>
-                <th></th>
+                <th>IP</th>
+                <th>Fecha y Hora</th>
+                <th>Usuario</th>
+                <th>Tabla</th>
+                <th>Acción</th>
+                <th>Recurso</th>
             </tr>
-            {% for trabajador in Trab %}
+            {% for traza in trazas %}
             <tr>
-                <td>{{ trabajador.nombre }} {{ trabajador.apellidos }}</td>
-                <td>{{ trabajador.usuario.username }}</td>
-                <td>{{ trabajador.ci }}</td>
-                <td>{{ trabajador.institucion.nombre }}</td>
-                <td>{{ trabajador.departamento.nombre }}</td>
-                <td {% if trabajador.horas_ocupadas >= 160 %}style="color: red"{% endif %}>{{ trabajador.horas_ocupadas }} Horas</td>
-                <td><a href="{% url 'editar_usuario' trabajador.usuario.id %}" class="btn btn-success">Editar</a></td>
+                <td>{{ traza.remote_addr }}</td>
+                <td>{{ traza.timestamp|date:"Y/m/d, h:i a" }}</td>
+                <td>{{ traza.actor }}</td>
+                <td>{{ traza.content_type.name }}</td>
+                <td>
+                    {% if traza.action == 0 %}
+                          crear
+                     {% elif traza.action == 1 %}
+                          actualizar
+                     {% else %}
+                          borrar
+                     {% endif %}
+                </td>
+                <th>{{ traza.object_repr }}</th>
             </tr>
 
             {% endfor %}
         </table>
     </div>
 {% endblock content %}
+
+

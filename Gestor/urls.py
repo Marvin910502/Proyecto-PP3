@@ -38,5 +38,6 @@ urlpatterns = [
     path('editar_tarea/<int:id_tarea>', Editar_Tarea, name='editar_tarea'),
     path('eliminar_tarea/<int:tarea_id>/', Eliminar_Tarea, name='eliminar_tarea'),
     path('eliminar_parte/<int:id_parte>/<str:tarea_nombre>', Eliminar_Parte, name='eliminar_parte'),
-    path('editar_parte/<str:tarea_nombre>/<int:id_parte>', Editar_Parte, name='editar_parte'),   
+    path('editar_parte/<str:tarea_nombre>/<int:id_parte>', Editar_Parte, name='editar_parte'),
+    path('trazas/', Trazas, name='trazas'),
 ]
