@@ -1,0 +1,134 @@
+{% extends 'admin/theme/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="card mt-3">
+        <div class="card-header">
+            <h2>Instituciones</h2>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Dirección</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for institucion in instituciones %}
+            <tr>
+                <td>{{ institucion.nombre }}</td>
+                <td>{{ institucion.descripcion }}</td>
+                <td>{{ institucion.direccion }}</td>
+                <td><a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editar_institucion_{{ institucion.id }}">Editar</a></td>
+                <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar_institucion_{{ institucion.id }}">Eliminar</a></td>
+            </tr>
+
+            <div class="modal fade" id="eliminar_institucion_{{ institucion.id }}" tabindex="-1" aria-labelledby="eliminar_institucion_{{ institucion.id }}_label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eliminar_institucion_{{ institucion.id }}_label">Eliminar Institución</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-text">
+                                ¿Está seguro que desea eliminar esta Institución?
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'eliminar_institucion' institucion.id %}" class="btn btn-outline-danger">Sí, eliminar</a>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editar_institucion_{{ institucion.id }}" tabindex="-1" aria-labelledby="editar_institucion_modal_label" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5>Editar Institución</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="container ps-5 pe-5">
+                            <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                <div class="row">
+                                    <div class="mb-3 col-12">
+                                      <label for="input_client_image" class="form-label mt-3">Nombre de Insitutción</label><br>
+                                      <input class="form-control" type="text" name="nombre" value="{{ institucion.nombre }}" required>
+                                    </div>
+                                    <div class="mb-3 col-12">
+                                      <label for="input_client_image" class="form-label">Descripción</label><br>
+                                      <textarea name="descripcion" class="form-control" type="text" rows="5">{{ institucion.descripcion }}</textarea>
+                                    </div>
+                                    <div class="mb-3 col-12">
+                                      <label for="input_client_image" class="form-label">Dirección</label><br>
+                                      <input class="form-control" type="text" name="direccion" value="{{ institucion.direccion }}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="hidden" name="editar_institucion" value="{{ institucion.id }}">
+                                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row mt-5 me-2">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <a class="btn btn-primary fs-1 ps-4 pe-4 pb-3" data-bs-toggle="modal" data-bs-target="#crear_institucion">+</a>
+        </div>
+        <div class="col-5"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="crear_institucion" tabindex="-1" aria-labelledby="crear_institucion_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5>Crear Institución</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="container ps-5 pe-5">
+                    <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                              <label for="input_client_image" class="form-label mt-3">Nombre de Insitutción</label><br>
+                              <input class="form-control" type="text" name="nombre" value="{{ nombre }}" required>
+                            </div>
+                            <div class="mb-3 col-12">
+                              <label for="input_client_image" class="form-label">Descripción</label><br>
+                              <textarea name="descripcion" class="form-control" type="text" rows="5">{{ descripcion }}</textarea>
+                            </div>
+                            <div class="mb-3 col-12">
+                              <label for="input_client_image" class="form-label">Dirección</label><br>
+                              <input class="form-control" type="text" name="direccion" value="{{ direccion }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="hidden" name="crear_institucion">
+                                <button type="submit" class="btn btn-outline-primary">Crear Insitución</button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+{% endblock content %}

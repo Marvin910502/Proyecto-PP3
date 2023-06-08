@@ -273,3 +273,125 @@ def Trazas(request):
         "section": 'Trazas'
     }
     return render(request, 'admin/trazas.html', context)
+
+
+def Instituciones(request):
+    instituciones = Institucion.objects.all().order_by('nombre')
+
+    if request.method == 'POST':
+        request_post = request.POST
+        if 'crear_institucion' in request_post:
+            Institucion.objects.create(
+                nombre=request_post.get('nombre'),
+                descripcion=request_post.get('descripcion'),
+                direccion=request_post.get('direccion'),
+            )
+        elif 'editar_institucion' in request_post:
+            institucion = Institucion.objects.filter(id=request_post.get('editar_institucion')).first()
+            institucion.nombre = request_post.get('nombre')
+            institucion.descripcion = request_post.get('descripcion')
+            institucion.direccion = request_post.get('direccion')
+            institucion.save()
+
+    context = {
+        "instituciones": instituciones,
+        "title": 'Gestor CFA',
+        "section": 'Instituciones',
+    }
+    return render(request, 'admin/instituciones.html', context)
+
+
+def Departamentos(request):
+    departamentos = Departamento.objects.all().order_by('nombre')
+
+    if request.method == 'POST':
+        request_post = request.POST
+        if 'crear_departamento' in request_post:
+            Departamento.objects.create(
+                nombre=request_post.get('nombre'),
+                descripcion=request_post.get('descripcion'),
+            )
+        elif 'editar_departamento' in request_post:
+            departamento = Departamento.objects.filter(id=request_post.get('editar_departamento')).first()
+            departamento.nombre = request_post.get('nombre')
+            departamento.descripcion = request_post.get('descripcion')
+            departamento.save()
+
+    context = {
+        "departamentos": departamentos,
+        "title": 'Gestor CFA',
+        "section": 'Departamentos',
+    }
+    return render(request, 'admin/departamentos.html', context)
+
+
+def Niveles_Academicos(request):
+    niveles_academicos = Nivel_Academico.objects.all().order_by('nivel_academico')
+
+    if request.method == 'POST':
+        request_post = request.POST
+        if 'crear_nivel_academico' in request_post:
+            Nivel_Academico.objects.create(
+                nivel_academico=request_post.get('nombre'),
+                descripcion=request_post.get('descripcion'),
+            )
+        elif 'editar_nivel_academico' in request_post:
+            nivel_academico = Nivel_Academico.objects.filter(id=request_post.get('editar_nivel_academico')).first()
+            nivel_academico.nivel_academico = request_post.get('nombre')
+            nivel_academico.descripcion = request_post.get('descripcion')
+            nivel_academico.save()
+
+    context = {
+        "niveles_academicos": niveles_academicos,
+        "title": 'Gestor CFA',
+        "section": 'Niveles Académicos',
+    }
+    return render(request, 'admin/nivel_academico.html', context)
+
+
+def Especializaciones(request):
+    especializaciones = Especializacion.objects.all().order_by('especializacion')
+
+    if request.method == 'POST':
+        request_post = request.POST
+        if 'crear_especializacion' in request_post:
+            Especializacion.objects.create(
+                especializacion=request_post.get('nombre'),
+                descripcion=request_post.get('descripcion'),
+            )
+        elif 'editar_especializacion' in request_post:
+            especializacion = Especializacion.objects.filter(id=request_post.get('editar_especializacion')).first()
+            especializacion.nivel_academico = request_post.get('nombre')
+            especializacion.descripcion = request_post.get('descripcion')
+            especializacion.save()
+
+    context = {
+        "especializaciones": especializaciones,
+        "title": 'Gestor CFA',
+        "section": 'Especializaciones',
+    }
+    return render(request, 'admin/especializaciones.html', context)
+
+
+def Eliminar_Institucion(request, id):
+    institucion = Institucion.objects.filter(id=id).first()
+    institucion.delete()
+    return redirect('instituciones')
+
+
+def Eliminar_Departamento(request, id):
+    departamento = Departamento.objects.filter(id=id).first()
+    departamento.delete()
+    return redirect('departamentos')
+
+
+def Eliminar_Nivel_Academico(request, id):
+    nivel_academico = Nivel_Academico.objects.filter(id=id).first()
+    nivel_academico.delete()
+    return redirect('niveles_academicos')
+
+
+def Eliminar_Especializacion(request, id):
+    especializacion = Especializacion.objects.filter(id=id).first()
+    especializacion.delete()
+    return redirect('especializaciones')

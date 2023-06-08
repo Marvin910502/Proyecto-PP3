@@ -40,4 +40,12 @@ urlpatterns = [
     path('eliminar_parte/<int:id_parte>/<str:tarea_nombre>', Eliminar_Parte, name='eliminar_parte'),
     path('editar_parte/<str:tarea_nombre>/<int:id_parte>', Editar_Parte, name='editar_parte'),
     path('trazas/', Trazas, name='trazas'),
+    path('instituciones/', Instituciones, name='instituciones'),
+    path('departamentos/', Departamentos, name='departamentos'),
+    path('niveles_academicos/', Niveles_Academicos, name='niveles_academicos'),
+    path('especializaciones/', Especializaciones, name='especializaciones'),
+    path('eliminar_institucion/<int:id>', Eliminar_Institucion, name='eliminar_institucion'),
+    path('eliminar_departamento/<int:id>', Eliminar_Departamento, name='eliminar_departamento'),
+    path('eliminar_nivel_academico/<int:id>', Eliminar_Nivel_Academico, name='eliminar_nivel_academico'),
+    path('eliminar_especializacion/<int:id>', Eliminar_Especializacion, name='eliminar_especializacion'),
 ]
