@@ -1,37 +1,17 @@
-<style>
-    .line-clamp {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-    }
+{% extends 'website/theme/base_website.html' %}
+{% load static %}
 
-    .line-clamp2 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-</style>
-
-
-<div class="row">
-    {% include 'header.html' %}
-</div>
-<div class="row">
-    <div class="col-2">
-        {% include 'sidebar.html' %}
-    </div>
-    <div class="col-10">
-        <div class="row">
-        <!-- Contenido dinámico inicio -->
-            <div class="col-6">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ Edit_Tarea_Form.as_p }}
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                </form>
-            </div>
-        <!-- Contenido dinámico fin -->
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-1 mt-3">
+            <a href="{% url 'tarea_view' investigacion_nombre %}" class="btn btn-primary">Volver</a>
         </div>
-    </div>    
+        <div class="col-6">
+            <form method="POST">
+                {% csrf_token %}
+                {{ Edit_Tarea_Form.as_p }}
+                <button type="submit" class="btn btn-success">Salvar</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

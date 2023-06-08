@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block content %}
-    <form method="POST" class="row" name="crear_usuario">
-
+    <form method="POST" name="crear_usuario">
+    <div class="row">
         {% csrf_token %}
         <div class="col-1 pt-2 mt-5 ps-2 pe-5">
             <a href="/menu_usuarios/" class="btn btn-primary">Volver</a>
@@ -15,14 +15,14 @@
             <input class="form-control" type="password" id="formFile" name="contraseña" value="{{ password }}">
             <label for="confirmar_contraseña" class="form-label mt-3">Confirmar Contraseña</label><br>
             <input class="form-control" type="password" id="formFile" name="confirmar_contraseña" value="{{ password2 }}">
-        </div>
-        <div class="col-5 pt-2 ps-5 pe-5">
             <label for="nombre" class="form-label mt-3">Nombre</label><br>
             <input class="form-control" type="text" id="formFile" name="nombre" value="{{ nombre }}">
             <label for="apellidos" class="form-label mt-3">Apellidos</label><br>
             <input class="form-control" type="text" id="formFile" name="apellidos" value="{{ apellidos }}">
             <label for="ci" class="form-label mt-3">Carnet de Identidad</label><br>
             <input class="form-control" type="text" id="formFile" name="ci" value="{{ ci }}" maxlength="11">
+        </div>
+        <div class="col-5 pt-2 ps-5 pe-5">
             <label for="input_client_image" class="form-label mt-3">Sexo</label><br>
             <select class="form-select" name="sexo" required>
               <option selected value="">-----</option>
@@ -58,9 +58,25 @@
                 <option {% if especializacion.id == especializacion_id.id %} selected {% endif %} value="{{ especializacion.id }}">{{ especializacion.especializacion }}</option>
               {% endfor %}
             </select>
-            <div class="mt-3"><button type="submit" class="btn btn-primary">Crear</button></div>
-
         </div>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10 ps-5 pe-5">
+            <label class="mt-3">Permisos del usuario</label>
+            <div class="border mt-3 overflow-scroll" style="max-height: 25rem">
+                {% for permiso in permisos %}
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-check-inline ms-2" type="checkbox" value="{{ permiso.id }}" name="{{ permiso.id }}">
+                            <label class="form-check-label ms-2 mt-2">{{ permiso.content_type }} {{ permiso.name }}</label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="mt-3 mb-5"><button type="submit" class="btn btn-primary">Crear</button></div>
+        </div>
+    </div>
 
     </form>
 {% endblock content %}

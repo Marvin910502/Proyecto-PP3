@@ -36,7 +36,6 @@ def populate_investigaciones():
         invest = Investigacion.objects.create(
             nombre=investigacion['nombre'],
             descripcion=investigacion['descripcion'],
-            fecha_comienzo=investigacion['fecha_comienzo'],
             fecha_culminacion=investigacion['fecha_culminacion'],
             completado=investigacion['completado'],
         )
@@ -44,7 +43,10 @@ def populate_investigaciones():
         invest.trabajador.add(Trabajador.objects.filter(nombre=investigacion['trabajador2']).first())
         if not investigacion['trabajador3'] == None:
             invest.trabajador.add(Trabajador.objects.filter(nombre=investigacion['trabajador3']).first())
-
+    for investigacion in investigaciones_data:
+        invest = Investigacion.objects.filter(nombre=investigacion['nombre']).first()
+        invest.fecha_comienzo = investigacion['fecha_comienzo']
+        invest.save()
 
 
 def populate_tareas():
@@ -53,7 +55,6 @@ def populate_tareas():
             nombre=tarea['nombre'],
             horas_necesarias=tarea['horas_necesarias'],
             descripcion=tarea['descripcion'],
-            fecha_comienzo=tarea['fecha_comienzo'],
             fecha_culminacion=tarea['fecha_culminacion'],
             investigacion=Investigacion.objects.filter(nombre=tarea['investigacion']).first()
         )
@@ -61,3 +62,7 @@ def populate_tareas():
             tar.trabajador.add(Trabajador.objects.filter(nombre=tarea['trabajador1']).first())
         if not tarea['trabajador2'] == None:
             tar.trabajador.add(Trabajador.objects.filter(nombre=tarea['trabajador2']).first())
+    for tarea in tarea_data:
+        tar = Tarea.objects.filter(nombre=tarea['nombre']).first()
+        tar.fecha_comienzo = tarea['fecha_comienzo']
+        tar.save()

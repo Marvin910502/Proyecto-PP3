@@ -13,20 +13,32 @@
             <div class="col-4 mt-4">
                 <div class="card text-center">
                     <div class="card-header">
-                      <h3 class="line-clamp">{{ Proyecto.nombre }}</h3>
+                      <h3 class="card-title">{{ Proyecto.nombre }}</h3>
                     </div>
                     <div class="card-body">
-                      <h5 class="card-title">{{ Proyecto.completado }}%</h5>
+                      <h5>{{ Proyecto.completado }}%</h5>
                       <p class="card-text" style="min-height: 3rem">{{ Proyecto.descripcion }}</p>
                       <a href="{% url 'tarea_view' Proyecto.nombre %}" class="btn btn-primary">Entrar</a>
                       <a href="{% url 'editar_investigacion' Proyecto.id %}" class="btn btn-success">Editar</a>
                     </div>
                     <div class="card-footer text-muted">
-                        <div class="col-6 ps-0 pe-0"><span class="fs-6">{{ Proyecto.fecha_comienzo }}</span></div>
-                        <div class="col-6 ps-0 pe-0"><span class="fs-6">{{ Proyecto.fecha_culmincion }}</span></div>
+                        <div class="row">
+                            <div class="col-6 ps-1 pe-1"><span class="fs-6">{{ Proyecto.fecha_comienzo }}</span></div>
+                            <div class="col-6 ps-1 pe-1"><span class="fs-6">{{ Proyecto.fecha_culminacion }}</span></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    {% if perms.models.add_investigacion %}
+    <div class="row mt-5 me-2">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <a href="/crear_investigacion/" class="btn btn-primary fs-1 ps-4 pe-4 pb-3">+</a>
+        </div>
+        <div class="col-5"></div>
+    </div>
+    {% endif %}
 {% endblock content %}

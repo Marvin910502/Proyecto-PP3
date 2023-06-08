@@ -25,6 +25,7 @@ def Login(request):
 @login_required()
 def Crear_Usuario(request):
     message, class_alert = check_session_message(request)
+    permisos = Permission.objects.all()
 
     password = ''
     password2 = ''
@@ -71,6 +72,11 @@ def Crear_Usuario(request):
                         horas_ocupadas=horas_ocupadas,
                         usuario=usuario,
                     )
+
+                    for permiso in permisos:
+                        if str(permiso.id) in request_post:
+                            usuario.user_permissions.add(permiso)
+
                     return redirect('menu_usuarios')
                 else:
                     message = ("El carnet de identidad tiene que tener 11 dígitos y solo números.")
@@ -107,6 +113,7 @@ def Crear_Usuario(request):
         'especializacion_list': especializacion_list,
         'title': 'Gestor CFA',
         'section': 'Crear Usuario',
+        'permisos': permisos,
     }
 
     return render(request, 'admin/crear_usuario.html', context)
@@ -123,6 +130,7 @@ def Eliminar_Usuario(request, id_user):
 @login_required()
 def Editar_Usuario(request, id_user):
     message, class_alert = check_session_message(request)
+    permisos = Permission.objects.all()
 
     trabajador = Trabajador.objects.filter(usuario_id=id_user).first()
 
@@ -165,6 +173,13 @@ def Editar_Usuario(request, id_user):
                     trabajador.nivel = nivel
                     trabajador.especializacion = especializacion
                     trabajador.save()
+
+                    for permiso in permisos:
+                        if str(permiso.id) in request_post:
+                            usuario.user_permissions.add(permiso)
+                        else:
+                            usuario.user_permissions.remove(permiso)
+
                 else:
                     message = ("El carnet de identidad tiene que tener 11 dígitos y solo números.")
                     class_alert = DANGER_MESSAGE
@@ -191,6 +206,11 @@ def Editar_Usuario(request, id_user):
     departamento_list = Departamento.objects.all()
     nivel_list = Nivel_Academico.objects.all()
     especializacion_list = Especializacion.objects.all()
+    permisos_aplicados = Permission.objects.filter(user=usuario)
+    permisos_list = []
+    for permiso in permisos_aplicados:
+        permisos_list.append(permiso.id)
+
     context = {
         'usuario': usuario,
         'nombre': nombre,
@@ -214,6 +234,8 @@ def Editar_Usuario(request, id_user):
         'old_password': old_password,
         'title': 'Gestor CFA',
         'section': 'Editar Usuario',
+        'permisos': permisos,
+        'permisos_list': permisos_list,
     }
 
     return render(request, 'admin/editar_usuario.html', context)

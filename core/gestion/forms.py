@@ -7,17 +7,8 @@ class DateInput(forms.DateInput):
     input_type = 'date-local'
 
 
-
-
-
-
 class DateTimeInput(forms.DateTimeInput):
     input_type = 'date-local'
-
-
-
-
-
 
 
 class CreacionInvestigacionForm(forms.ModelForm):
@@ -32,17 +23,9 @@ class CreacionInvestigacionForm(forms.ModelForm):
 
         }  
 
-
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, trabajador, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['trabajador'].queryset = Trabajador.objects.all()
-
-
-
-
-
-
-
+        self.fields['trabajador'].queryset = Trabajador.objects.exclude(id=trabajador).order_by('nombre')
 
 
 class CreacionTareaForm(forms.ModelForm):
@@ -56,17 +39,9 @@ class CreacionTareaForm(forms.ModelForm):
             'trabajador': forms.CheckboxSelectMultiple(),
         }
 
-
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, investigacion, **kwargs,):
         super().__init__(*args, **kwargs)
-        self.fields['trabajador'].queryset = Trabajador.objects.all()
-
-
-
-
-
-
-
+        self.fields['trabajador'].queryset = Trabajador.objects.filter(investigacion=investigacion).order_by('nombre')
 
 
 class ParteForm(forms.ModelForm):
